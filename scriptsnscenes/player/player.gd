@@ -9,6 +9,7 @@ const GRAVITY = Vector3.DOWN * 20
 @onready var head: Node3D = $Head
 @onready var camera: Camera3D = $Head/Camera3D
 @export var ray : RayCast3D
+#var is_crouched : bool = false
 
 
 func _ready() -> void:

@@ -124,14 +124,15 @@ Need to add to the table of contents if i do this yepype
   - [ ] Implement swimming mechanics
 - [X] Camera
   - [X] Set up first-person camera
+  - [X] Add crosshair
   - [ ] Add mouse look with sensitivity settings
   - [ ] Implement head bobbing
   - [ ] Add FOV adjustments
 
 ### Phase 2: Core Voxel Engine
 - [ ] Block System
-  - [ ] Create `Block` resource class with properties (id, name, texture coordinates)
-  - [ ] Build block registry/database
+  - [X] Create `Block` resource class with properties (id, name, texture coordinates)
+  - [X] Build block registry/database
   - [ ] Implement block types (air, dirt, grass, stone, wood, leaves)
   - [ ] Set up texture atlas system
 - [ ] Chunk System
