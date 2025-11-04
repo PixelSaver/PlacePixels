@@ -7,14 +7,14 @@ var blocks_by_id: Dictionary = {}
 
 func load_blocks():
 	# Load all .tres files from res://blocks/
-	var dir = DirAccess.open("res://assets/blocks/")
+	var dir = DirAccess.open("res://resources/blocks/")
 	if dir:
 		dir.list_dir_begin()
 		var file_name = dir.get_next()
 		
 		while file_name != "":
 			if file_name.ends_with(".tres"):
-				var block: Block = load("res://blocks/" + file_name)
+				var block: Block = load("res://resources/blocks/" + file_name)
 				register_block(block)
 			file_name = dir.get_next()
 		

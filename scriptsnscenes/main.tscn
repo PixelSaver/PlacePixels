@@ -1,8 +1,9 @@
-[gd_scene load_steps=13 format=3 uid="uid://bkwgaigmq15al"]
+[gd_scene load_steps=14 format=3 uid="uid://bkwgaigmq15al"]
 
 [ext_resource type="PackedScene" uid="uid://ctaqaandd8osr" path="res://scriptsnscenes/player/player.tscn" id="1_o5qli"]
 [ext_resource type="Script" uid="uid://dvp4eva5t5ppq" path="res://scriptsnscenes/main.gd" id="1_p1m74"]
 [ext_resource type="PackedScene" uid="uid://bpfttyvlreu3a" path="res://scriptsnscenes/ui/ui.tscn" id="3_ws6cm"]
+[ext_resource type="Script" uid="uid://babi1u2qarn12" path="res://scriptsnscenes/worldgen/world_gen.gd" id="4_vu4fw"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_o5qli"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -89,3 +90,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("ConvexPolygonShape3D_jyhfs")
 
 [node name="UI" parent="." instance=ExtResource("3_ws6cm")]
+
+[node name="WorldGen" type="Node" parent="."]
+script = ExtResource("4_vu4fw")

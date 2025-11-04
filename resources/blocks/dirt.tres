@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Block" load_steps=2 format=3 uid="uid://dg2kw4n6tidjw"]
+
+[ext_resource type="Script" uid="uid://dorvlrl34dn30" path="res://scriptsnscenes/blocks/block.gd" id="1_psi48"]
+
+[resource]
+script = ExtResource("1_psi48")
+id = 1
+block_name = "dirt"
+metadata/_custom_type_script = "uid://dorvlrl34dn30"

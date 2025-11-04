@@ -58,15 +58,15 @@ func _initialize_blocks():
 				blocks[x][y].append(default_block)
 				#TODO Figure out if i want .duplicate() for every instance??
 
-## Set the block at the local coords x, y, z of the chunk
+## Set the block at the local coords x, y, z of the chunk, given the ID
 func set_block(x: int, y: int, z: int, block_type: int):
 	if x >= 0 and x < CHUNK_SIZE and y >= 0 and y < CHUNK_HEIGHT and z >= 0 and z < CHUNK_SIZE:
-		blocks[x][y][z] = block_type
+		blocks[x][y][z] = BlockRegistry.get_block_by_id(block_type)
 		return
 	assert("One of x y z failed in set_block: (%s, %s, %s)" % [x, y, z])
 
 ## Get the block at the local coords x, y, z of the chunk
-func get_block(x: int, y: int, z: int) -> int:
+func get_block(x: int, y: int, z: int) -> Block:
 	if x >= 0 and x < CHUNK_SIZE and y >= 0 and y < CHUNK_HEIGHT and z >= 0 and z < CHUNK_SIZE:
 		return blocks[x][y][z]
 	assert("One of x y z failed in get_block: (%s, %s, %s)" % [x, y, z])
@@ -87,7 +87,7 @@ func build_mesh():
 				var block_type = blocks[x][y][z]
 				
 				# Skip air blocks
-				if block_type == default_block:
+				if block_type == default_block.id:
 					continue
 				
 				var block_pos = Vector3(x, y, z)
@@ -114,7 +114,7 @@ func build_mesh():
 ## Check if a face should be rendered (adjacent block is transparent)
 func is_face_visible(x: int, y: int, z: int) -> bool:
 	var adjacent_block = get_block(x, y, z)
-	return is_block_transparent(adjacent_block)
+	return is_block_transparent(adjacent_block.id)
 
 func _add_face(surface_tool: SurfaceTool, pos: Vector3, face: String, block_type: int):
 	"""Add a single face to the mesh"""
