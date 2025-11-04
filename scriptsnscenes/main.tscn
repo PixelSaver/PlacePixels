@@ -47,7 +47,7 @@ shadow_enabled = true
 
 [node name="Player" parent="." instance=ExtResource("1_o5qli")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.3644495, 2.0000005, 1.8400388)
-mouse_sensitivity = null
+mouse_sensitivity = 0.01
 
 [node name="HoldderFloor" type="StaticBody3D" parent="."]
 visible = false

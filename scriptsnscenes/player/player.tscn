@@ -5,10 +5,11 @@
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_g2els"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rd6mq"]
-size = Vector3(1, 1.99, 1)
+size = Vector3(0.7, 1.99, 0.7)
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_3vyb7")
+mouse_sensitivity = null
 
 [node name="Head" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)

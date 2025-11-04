@@ -5,7 +5,7 @@ const CHUNK_SIZE = 16
 const CHUNK_HEIGHT = 256
 
 var blocks : Array = []
-var chunk_position : Vector3i = Vector3i.ZERO
+var chunk_position : Vector2i = Vector2i.ZERO
 
 var default_block : Block 
 
@@ -44,7 +44,7 @@ const UVS = [
 ]
 var vertex_count := 0
 
-func _init(pos: Vector3i = Vector3i.ZERO):
+func _init(pos: Vector2i = Vector2i.ZERO):
 	default_block = BlockRegistry.get_block("air")
 	chunk_position = pos
 	_initialize_blocks()
@@ -139,6 +139,9 @@ func _add_face(surface_tool: SurfaceTool, pos: Vector3, face: String, block_type
 
 func _get_block_color(block_id:int, face:String):
 	return BlockRegistry.get_block_by_id(block_id).block_colors[0] if BlockRegistry.get_block_by_id(block_id).block_colors[0] else Color.RED
+
+func global_to_chunk_coords(global_vec:Vector3i):
+	return Vector2i(global_vec.x%CHUNK_SIZE, global_vec.z%CHUNK_SIZE)
 
 ## ME WHEN I ACTUALLY TRY TO MAKE THIS GO FARTHER THAN SIEGE
 

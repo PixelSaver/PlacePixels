@@ -51,6 +51,7 @@ func _input(event: InputEvent) -> void:
 		rot_y = clamp(rot_y, -PI/2.+up_down_deadzone, PI/2.-up_down_deadzone)
 		head.rotation.x = rot_y
 	elif Input.is_action_just_pressed("left_click"):
+		raycast_block(Global.world_gen.get_chunk(Vector2i.ZERO), head.origin, head.basis.z)
 		pass
 
 ## Raycast function using Digital Differential Analyzer
