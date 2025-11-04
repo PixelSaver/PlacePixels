@@ -21,7 +21,6 @@ func load_blocks():
 		
 		dir.list_dir_end()
 	
-	print("Loaded %d blocks" % blocks_by_name.size())
 	blocks_loaded.emit()
 
 func register_block(block: Block):

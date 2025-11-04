@@ -11,23 +11,23 @@ var default_block : Block
 
 # Face vertices for cube (send help)
 const VERTICES = {
-	"top": [
-		Vector3(0, 1, 0), Vector3(0, 1, 1), Vector3(1, 1, 1), Vector3(1, 1, 0)
+	"top": [   
+		Vector3(0, 1, 0), Vector3(1, 1, 0), Vector3(1, 1, 1), Vector3(0, 1, 1)
 	],
 	"bottom": [
-		Vector3(0, 0, 1), Vector3(0, 0, 0), Vector3(1, 0, 0), Vector3(1, 0, 1)
+		Vector3(0, 0, 0), Vector3(0, 0, 1), Vector3(1, 0, 1), Vector3(1, 0, 0)
 	],
-	"left": [
-		Vector3(0, 0, 0), Vector3(0, 0, 1), Vector3(0, 1, 1), Vector3(0, 1, 0)
+	"left": [  
+		Vector3(0, 0, 0), Vector3(0, 1, 0), Vector3(0, 1, 1), Vector3(0, 0, 1)
 	],
-	"right": [
-		Vector3(1, 0, 1), Vector3(1, 0, 0), Vector3(1, 1, 0), Vector3(1, 1, 1)
+	"right": [ 
+		Vector3(1, 0, 1), Vector3(1, 1, 1), Vector3(1, 1, 0), Vector3(1, 0, 0)
 	],
-	"front": [
-		Vector3(0, 0, 1), Vector3(1, 0, 1), Vector3(1, 1, 1), Vector3(0, 1, 1)
+	"front": [ 
+		Vector3(0, 0, 1), Vector3(0, 1, 1), Vector3(1, 1, 1), Vector3(1, 0, 1)
 	],
-	"back": [
-		Vector3(1, 0, 0), Vector3(0, 0, 0), Vector3(0, 1, 0), Vector3(1, 1, 0)
+	"back": [  
+		Vector3(1, 0, 0), Vector3(1, 1, 0), Vector3(0, 1, 0), Vector3(0, 0, 0)
 	]
 }
 const NORMALS = {
@@ -112,7 +112,7 @@ func build_mesh():
 ## Check if a face should be rendered (adjacent block is transparent)
 func is_face_visible(x: int, y: int, z: int) -> bool:
 	var adjacent_block = get_block(x, y, z)
-	return is_block_transparent(adjacent_block.id) if adjacent_block else null
+	return is_block_transparent(adjacent_block.id)
 
 ## Add a single face to the mesh
 func _add_face(surface_tool: SurfaceTool, pos: Vector3, face: String, block_type: int):
