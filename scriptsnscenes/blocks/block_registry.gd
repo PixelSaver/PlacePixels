@@ -1,13 +1,9 @@
 extends Node
-class_name BlockRegistry
 
 ## Stores blocks by name: "stone" -> Block resource; dynamically loaded
 var blocks_by_name: Dictionary = {}
 ## Stores blocks by ID: 0 -> Block resource; dynamically loaded
 var blocks_by_id: Dictionary = {}
-
-func _ready():
-	load_blocks()
 
 func load_blocks():
 	# Load all .tres files from res://blocks/

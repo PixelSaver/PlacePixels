@@ -1,6 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://bkwgaigmq15al"]
+[gd_scene load_steps=12 format=3 uid="uid://bkwgaigmq15al"]
 
 [ext_resource type="PackedScene" uid="uid://ctaqaandd8osr" path="res://scriptsnscenes/player/player.tscn" id="1_o5qli"]
+[ext_resource type="Script" uid="uid://dvp4eva5t5ppq" path="res://scriptsnscenes/main.gd" id="1_p1m74"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_o5qli"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -33,6 +34,7 @@ points = PackedVector3Array(-0.5, -1, -2.5, 0.5, -1, -2.5, -0.5, -1, 2.5, -0.5, 
 points = PackedVector3Array(-0.5, -1, -2.5, 0.5, -1, -2.5, -0.5, -1, 2.5, -0.5, 1, -2.5, 0.5, 1, -2.5, 0.5, -1, 2.5, -0.5, 1, 2.5, 0.5, 1, 2.5)
 
 [node name="Main" type="Node3D"]
+script = ExtResource("1_p1m74")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_sugp2")
@@ -84,3 +86,26 @@ mesh = SubResource("BoxMesh_o5qli")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D3"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("ConvexPolygonShape3D_jyhfs")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Control/CenterContainer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+color = Color(1, 1, 1, 0.52156866)
