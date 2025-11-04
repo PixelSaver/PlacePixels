@@ -133,11 +133,12 @@ Need to add to the table of contents if i do this yepype
 - [ ] Block System
   - [X] Create `Block` resource class with properties (id, name, texture coordinates)
   - [X] Build block registry/database
-  - [ ] Implement block types (air, dirt, grass, stone, wood, leaves)
+  - [X] Implement block types (air, dirt, grass, stone, wood, leaves)
   - [ ] Set up texture atlas system
+    - [X] Temporary color system for blocks
 - [ ] Chunk System
-  - [ ] Design chunk data structure (16x16x16 or 32x32x32 blocks)
-  - [ ] Implement chunk class with 3D array storage
+  - [X] Design chunk data structure (16x16x16 or 32x32x32 blocks)
+  - [X] Implement chunk class with 3D array storage
   - [ ] Create chunk mesh generation (greedy meshing algorithm)
   - [ ] Add face culling (don't render hidden faces)
   - [ ] Implement chunk serialization/deserialization

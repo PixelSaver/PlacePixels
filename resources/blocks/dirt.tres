@@ -6,4 +6,5 @@
 script = ExtResource("1_psi48")
 id = 1
 block_name = "dirt"
+block_colors = Array[Color]([Color(0.3, 0.20639999, 0.08399999, 1)])
 metadata/_custom_type_script = "uid://dorvlrl34dn30"

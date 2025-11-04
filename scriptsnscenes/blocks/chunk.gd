@@ -138,9 +138,8 @@ func _add_face(surface_tool: SurfaceTool, pos: Vector3, face: String, block_type
 	surface_tool.add_index(offset + 2)
 	surface_tool.add_index(offset + 3)
 
-func _get_block_color(_block_id:int, _face:String):
-	#TODO Fix and actually read color?
-	return Color.BEIGE
+func _get_block_color(block_id:int, face:String):
+	return BlockRegistry.get_block_by_id(block_id).block_colors[0] if BlockRegistry.get_block_by_id(block_id).block_colors[0] else Color.RED
 
 ## ME WHEN I ACTUALLY TRY TO MAKE THIS GO FARTHER THAN SIEGE
 
