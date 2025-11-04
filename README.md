@@ -122,8 +122,8 @@ Need to add to the table of contents if i do this yepype
   - [ ] Implement sprinting
   - [ ] Add crouching/sneaking
   - [ ] Implement swimming mechanics
-- [ ] Camera
-  - [ ] Set up first-person camera
+- [X] Camera
+  - [X] Set up first-person camera
   - [ ] Add mouse look with sensitivity settings
   - [ ] Implement head bobbing
   - [ ] Add FOV adjustments
