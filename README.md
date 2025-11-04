@@ -116,8 +116,8 @@ Need to add to the table of contents if i do this yepype
 
 ### Phase 1: Player Controller
 - [ ] Movement
-  - [ ] Implement WASD movement
-  - [ ] Add jumping and gravity
+  - [X] Implement WASD movement
+  - [X] Add jumping and gravity
   - [ ] Create collision detection with voxels
   - [ ] Implement sprinting
   - [ ] Add crouching/sneaking
@@ -227,6 +227,8 @@ Need to add to the table of contents if i do this yepype
   - [ ] Add particle effects
   - [ ] Create weather system (rain, snow)
   - [ ] Add sky/cloud rendering
+  - [ ] God rays
+  - [ ] Find cool minecraft shaders and implement??
 - [ ] World Features
   - [ ] Generate villages
   - [ ] Add dungeons/structures
