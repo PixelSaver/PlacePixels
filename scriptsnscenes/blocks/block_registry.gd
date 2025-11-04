@@ -1,5 +1,6 @@
 extends Node
 
+signal blocks_loaded
 ## Stores blocks by name: "stone" -> Block resource; dynamically loaded
 var blocks_by_name: Dictionary = {}
 ## Stores blocks by ID: 0 -> Block resource; dynamically loaded
@@ -21,6 +22,7 @@ func load_blocks():
 		dir.list_dir_end()
 	
 	print("Loaded %d blocks" % blocks_by_name.size())
+	blocks_loaded.emit()
 
 func register_block(block: Block):
 	if block.id in blocks_by_id:

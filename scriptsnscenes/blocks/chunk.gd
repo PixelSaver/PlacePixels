@@ -7,7 +7,7 @@ const CHUNK_HEIGHT = 256
 var blocks : Array = []
 var chunk_position : Vector3i = Vector3i.ZERO
 
-@onready var default_block = BlockRegistry.get_block("air")
+var default_block : Block 
 
 # Face vertices for cube (send help)
 const VERTICES = {
@@ -42,8 +42,10 @@ const NORMALS = {
 const UVS = [
 	Vector2(0, 1), Vector2(0, 0), Vector2(1, 0), Vector2(1, 1)
 ]
+var vertex_count := 0
 
 func _init(pos: Vector3i = Vector3i.ZERO):
+	default_block = BlockRegistry.get_block("air")
 	chunk_position = pos
 	_initialize_blocks()
 
@@ -76,50 +78,47 @@ func get_block(x: int, y: int, z: int) -> Block:
 func is_block_transparent(block_id: int) -> bool:
 	return BlockRegistry.get_block_by_id(block_id).is_transparent
 
+## Generate mesh for this chunk with face culling
 func build_mesh():
-	"""Generate mesh for this chunk with face culling"""
 	var surface_tool = SurfaceTool.new()
 	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var mat = StandardMaterial3D.new()
+	mat.vertex_color_use_as_albedo = true
+	surface_tool.set_material(mat)	
+	vertex_count = 0
 	
 	for x in range(CHUNK_SIZE):
 		for y in range(CHUNK_HEIGHT):
 			for z in range(CHUNK_SIZE):
+				assert(default_block != null, "default_block is null!")
 				var block = blocks[x][y][z]
-				
-				# Skip air blocks
 				if block.id == default_block.id:
 					continue
+				print("Solid block at:", x,y,z, " transparent?", block.is_transparent)
 				
 				var block_pos = Vector3(x, y, z)
 				
 				# Check each face and add if exposed
-				if is_face_visible(x, y + 1, z):
-					_add_face(surface_tool, block_pos, "top", block.id)
-				if is_face_visible(x, y - 1, z):
-					_add_face(surface_tool, block_pos, "bottom", block.id)
-				if is_face_visible(x - 1, y, z):
-					_add_face(surface_tool, block_pos, "left", block.id)
-				if is_face_visible(x + 1, y, z):
-					_add_face(surface_tool, block_pos, "right", block.id)
-				if is_face_visible(x, y, z + 1):
-					_add_face(surface_tool, block_pos, "front", block.id)
-				if is_face_visible(x, y, z - 1):
-					_add_face(surface_tool, block_pos, "back", block.id)
+				if is_face_visible(x, y + 1, z): _add_face(surface_tool, block_pos, "top", block.id)
+				if is_face_visible(x, y - 1, z): _add_face(surface_tool, block_pos, "bottom", block.id)
+				if is_face_visible(x - 1, y, z): _add_face(surface_tool, block_pos, "left", block.id)
+				if is_face_visible(x + 1, y, z): _add_face(surface_tool, block_pos, "right", block.id)
+				if is_face_visible(x, y, z + 1): _add_face(surface_tool, block_pos, "front", block.id)
+				if is_face_visible(x, y, z - 1): _add_face(surface_tool, block_pos, "back", block.id)
 	
-	surface_tool.generate_normals()
 	mesh = surface_tool.commit()
-
 	create_trimesh_collision()
 
 ## Check if a face should be rendered (adjacent block is transparent)
 func is_face_visible(x: int, y: int, z: int) -> bool:
 	var adjacent_block = get_block(x, y, z)
-	return is_block_transparent(adjacent_block.id)
+	return is_block_transparent(adjacent_block.id) if adjacent_block else null
 
+## Add a single face to the mesh
 func _add_face(surface_tool: SurfaceTool, pos: Vector3, face: String, block_type: int):
-	"""Add a single face to the mesh"""
 	var verts = VERTICES[face]
 	var normal = NORMALS[face]
+	var offset = vertex_count
 	
 	# Add vertices in correct order for triangle strip
 	for i in range(4):
@@ -128,8 +127,9 @@ func _add_face(surface_tool: SurfaceTool, pos: Vector3, face: String, block_type
 		surface_tool.set_color(_get_block_color(block_type, face))
 		surface_tool.add_vertex(pos + verts[i])
 	
+	vertex_count += 4
+	
 	# Two triangles per face
-	var offset = surface_tool.get_vertex_count() - 4
 	surface_tool.add_index(offset + 0)
 	surface_tool.add_index(offset + 1)
 	surface_tool.add_index(offset + 2)
@@ -138,7 +138,7 @@ func _add_face(surface_tool: SurfaceTool, pos: Vector3, face: String, block_type
 	surface_tool.add_index(offset + 2)
 	surface_tool.add_index(offset + 3)
 
-func _get_block_color(block_id:int, face:String):
+func _get_block_color(_block_id:int, _face:String):
 	#TODO Fix and actually read color?
 	return Color.BEIGE
 
