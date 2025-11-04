@@ -8,7 +8,7 @@ class_name Block
 @export var break_time : float = 1.0
 @export_category("Textures")
 ## Up, Down, Sides
-@export var block_colors : Array[Colors]
+@export var block_colors : Array[Color]
 #TODO
 @export_category("Sounds")
 #TODO

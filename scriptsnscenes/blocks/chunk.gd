@@ -141,3 +141,17 @@ func _add_face(surface_tool: SurfaceTool, pos: Vector3, face: String, block_type
 func _get_block_color(block_id:int, face:String):
 	#TODO Fix and actually read color?
 	return Color.BEIGE
+
+## ME WHEN I ACTUALLY TRY TO MAKE THIS GO FARTHER THAN SIEGE
+
+## Serialize chunk to dictionary for saving
+func serialize() -> Dictionary:
+	return {
+		"position": chunk_position,
+		"blocks": blocks
+	}
+
+## Load chunk from saved data
+func deserialize(data: Dictionary):
+	chunk_position = data.get("position", Vector3i.ZERO)
+	blocks = data.get("blocks", [])
