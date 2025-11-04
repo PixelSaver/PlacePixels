@@ -2,7 +2,7 @@ extends CharacterBody3D
 class_name Player
 
 const SPEED = 5.0
-const JUMP_VELOCITY = 1
+const JUMP_VELOCITY = 10
 const GRAVITY = Vector3.DOWN * 20
 
 @export var mouse_sensitivity: float = 0.01

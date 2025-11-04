@@ -5,10 +5,9 @@
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_g2els"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rd6mq"]
-size = Vector3(1, 2, 1)
+size = Vector3(1, 1.99, 1)
 
 [node name="Player" type="CharacterBody3D"]
-safe_margin = 0.05
 script = ExtResource("1_3vyb7")
 
 [node name="Head" type="Node3D" parent="."]
