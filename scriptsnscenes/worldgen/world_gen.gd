@@ -7,24 +7,22 @@ var loaded_chunks :Dictionary = {}
 func _ready():
 	Global.world_gen = self
 	await BlockRegistry.blocks_loaded
-	var chunk = Chunk.new(Vector2i.ZERO)
-	add_child(chunk)
-	loaded_chunks.assign({chunk.position: chunk})
+	var chunk = add_chunk(Vector2i.ZERO)
 
 	_generate_flat_world(chunk)
 	chunk.build_mesh()
 
+## Adds a chunk to the world, and returns the chunk. If there is a chunk in that position already, return that chunk
 func add_chunk(pos: Vector2i) -> Chunk:
 	if not loaded_chunks.has(pos):
 		var new_chunk = Chunk.new(pos)
-		_generate_flat_world(new_chunk)
 		add_child(new_chunk)
-		loaded_chunks[pos] = new_chunk
+		loaded_chunks.set(pos, new_chunk)
 		return new_chunk
 	else: return loaded_chunks.get(pos)
 
 ## Return chunk given x, y in chunk space
-func get_chunk(pos: Vector2i):
+func get_chunk(pos: Vector2i) -> Chunk:
 	if loaded_chunks.has(pos):
 		return loaded_chunks.get(pos)
 	return add_chunk(pos)

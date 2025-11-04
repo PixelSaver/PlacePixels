@@ -51,7 +51,12 @@ func _input(event: InputEvent) -> void:
 		rot_y = clamp(rot_y, -PI/2.+up_down_deadzone, PI/2.-up_down_deadzone)
 		head.rotation.x = rot_y
 	elif Input.is_action_just_pressed("left_click"):
-		raycast_block(Global.world_gen.get_chunk(Vector2i.ZERO), head.origin, head.basis.z)
+		var chunk : Chunk = Global.world_gen.get_chunk(Vector2i.ZERO)
+		var ray_hit_pos := raycast_block(chunk, head.global_transform.origin, head.basis.z*-1)
+		if ray_hit_pos == Vector3i.MIN: return
+		print("ray hit! %s" % ray_hit_pos)
+		chunk.set_block(ray_hit_pos.x, ray_hit_pos.y, ray_hit_pos.z, BlockIDs.AIR)
+		chunk.build_mesh()
 		pass
 
 ## Raycast function using Digital Differential Analyzer
@@ -100,4 +105,4 @@ func raycast_block(chunk: Chunk, origin: Vector3, direction: Vector3, max_distan
 			traveled = t_max.z
 			t_max.z += t_delta.z
 
-	return Vector3i.ZERO
+	return Vector3i.MIN
