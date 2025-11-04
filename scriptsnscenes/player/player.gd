@@ -23,7 +23,13 @@ func _physics_process(delta: float) -> void:
 		velocity.y = JUMP_VELOCITY
 	
 	var input_dir := Input.get_vector("left", "right", "up", "down")
-	var direction := (head.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	var forward := head.basis.z
+	forward.y = 0
+	forward = forward.normalized()
+	var right := head.basis.x
+	right.y = 0
+	right = right.normalized()
+	var direction := (right * input_dir.x + forward * input_dir.y).normalized()
 	
 	if direction:
 		velocity.x = direction.x * SPEED
@@ -35,10 +41,10 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 
-
+var up_down_deadzone : float = 1e-7
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		head.rotation.y -= event.relative.x * mouse_sensitivity
 		var rot_y = head.rotation.x - event.relative.y * mouse_sensitivity
-		rot_y = clamp(rot_y, -PI/2., PI/2.)
+		rot_y = clamp(rot_y, -PI/2.+up_down_deadzone, PI/2.-up_down_deadzone)
 		head.rotation.x = rot_y
