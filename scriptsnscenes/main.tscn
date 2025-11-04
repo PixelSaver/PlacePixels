@@ -46,9 +46,11 @@ transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545
 shadow_enabled = true
 
 [node name="Player" parent="." instance=ExtResource("1_o5qli")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.873558, 0.081774235, 1.8397182)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.3644495, 2.0000005, 1.8400388)
+mouse_sensitivity = null
 
 [node name="HoldderFloor" type="StaticBody3D" parent="."]
+visible = false
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="HoldderFloor"]
 mesh = SubResource("PlaneMesh_0wfyh")
@@ -58,6 +60,7 @@ shape = SubResource("WorldBoundaryShape3D_sugp2")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.1058936, -9.536743e-07, -6.236454)
+visible = false
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -69,6 +72,7 @@ shape = SubResource("ConvexPolygonShape3D_0wfyh")
 
 [node name="StaticBody3D2" type="StaticBody3D" parent="."]
 transform = Transform3D(0.49999997, 0, 0.86602545, 0, 1, 0, -0.86602545, 0, 0.49999997, -6.9209523, 0, 7.4776897)
+visible = false
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -80,6 +84,7 @@ shape = SubResource("ConvexPolygonShape3D_sugp2")
 
 [node name="StaticBody3D3" type="StaticBody3D" parent="."]
 transform = Transform3D(-5.9604645e-08, 0, 1, 0, 1, 0, -1, 0, -5.9604645e-08, -5.371794, 0, 0.23184013)
+visible = false
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D3"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

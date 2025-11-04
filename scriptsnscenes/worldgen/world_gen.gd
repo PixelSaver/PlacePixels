@@ -4,6 +4,7 @@ class_name WorldGen
 var chunk: Chunk
 
 func _ready():
+	Global.world_gen = self
 	await BlockRegistry.blocks_loaded
 	chunk = Chunk.new(Vector3i.ZERO)
 	add_child(chunk)

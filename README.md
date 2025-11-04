@@ -243,6 +243,9 @@ Need to add to the table of contents if i do this yepype
   - [ ] Redstone-like logic system
   - [ ] Add multiplayer support (NEVER lol)
 
+### Bugs and Notes for future
+- [ ] Moving into a place while falling doesn't move you into the place... why?
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 

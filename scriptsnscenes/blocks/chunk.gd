@@ -94,7 +94,6 @@ func build_mesh():
 				var block = blocks[x][y][z]
 				if block.id == default_block.id:
 					continue
-				print("Solid block at:", x,y,z, " transparent?", block.is_transparent)
 				
 				var block_pos = Vector3(x, y, z)
 				
