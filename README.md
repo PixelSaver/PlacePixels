@@ -162,8 +162,9 @@ Need to add to the table of contents if i do this yepype
   - [ ] Create bedrock layer
 
 ### Phase 4: Block Interaction
-- [ ] Raycasting
-  - [ ] Implement voxel raycasting for block selection
+- [x] Raycasting
+  - [x] Implement voxel raycasting for block selection
+  - [ ] Make efficient mesh reloading (so we don't rebuild entire chunk every time)
   - [ ] Add block outline/highlight shader
   - [ ] Detect which face was hit
 - [ ] Block Modification
