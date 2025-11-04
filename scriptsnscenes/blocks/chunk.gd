@@ -84,27 +84,27 @@ func build_mesh():
 	for x in range(CHUNK_SIZE):
 		for y in range(CHUNK_HEIGHT):
 			for z in range(CHUNK_SIZE):
-				var block_type = blocks[x][y][z]
+				var block = blocks[x][y][z]
 				
 				# Skip air blocks
-				if block_type == default_block.id:
+				if block.id == default_block.id:
 					continue
 				
 				var block_pos = Vector3(x, y, z)
 				
 				# Check each face and add if exposed
 				if is_face_visible(x, y + 1, z):
-					_add_face(surface_tool, block_pos, "top", block_type)
+					_add_face(surface_tool, block_pos, "top", block.id)
 				if is_face_visible(x, y - 1, z):
-					_add_face(surface_tool, block_pos, "bottom", block_type)
+					_add_face(surface_tool, block_pos, "bottom", block.id)
 				if is_face_visible(x - 1, y, z):
-					_add_face(surface_tool, block_pos, "left", block_type)
+					_add_face(surface_tool, block_pos, "left", block.id)
 				if is_face_visible(x + 1, y, z):
-					_add_face(surface_tool, block_pos, "right", block_type)
+					_add_face(surface_tool, block_pos, "right", block.id)
 				if is_face_visible(x, y, z + 1):
-					_add_face(surface_tool, block_pos, "front", block_type)
+					_add_face(surface_tool, block_pos, "front", block.id)
 				if is_face_visible(x, y, z - 1):
-					_add_face(surface_tool, block_pos, "back", block_type)
+					_add_face(surface_tool, block_pos, "back", block.id)
 	
 	surface_tool.generate_normals()
 	mesh = surface_tool.commit()
