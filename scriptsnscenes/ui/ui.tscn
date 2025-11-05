@@ -1,6 +1,10 @@
-[gd_scene format=3 uid="uid://bpfttyvlreu3a"]
+[gd_scene load_steps=2 format=3 uid="uid://bpfttyvlreu3a"]
 
-[node name="UI" type="CanvasLayer"]
+[ext_resource type="Script" uid="uid://mrmx8c7gdlq8" path="res://scriptsnscenes/ui/ui.gd" id="1_nfa55"]
+
+[node name="UI" type="CanvasLayer" node_paths=PackedStringArray("fps_label")]
+script = ExtResource("1_nfa55")
+fps_label = NodePath("Control/RichTextLabel")
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
@@ -22,3 +26,8 @@ grow_vertical = 2
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 color = Color(1, 1, 1, 0.52156866)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0

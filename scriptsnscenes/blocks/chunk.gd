@@ -153,12 +153,19 @@ func _process(_delta):
 		_rebuild_dirty_blocks()
 
 func _rebuild_dirty_blocks():
+	if dirty_blocks.size() == 0: return
+	dirty_blocks.clear()
+	build_mesh()
+	
+	
+	# I GIVE UP EVERYTHING BELOW CAN DIE
+	return
 	var positions = dirty_blocks.duplicate()
 	dirty_blocks.clear()
 
 	var surface_tool = SurfaceTool.new()
-	#surface_tool.create_from(mesh, 0)
-	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+	surface_tool.create_from(mesh, 0)
+	#surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
 
 	var mat = StandardMaterial3D.new()
 	mat.vertex_color_use_as_albedo = true
