@@ -3,7 +3,7 @@ extends EditorScript
 
 func _run():
 	var blocks_dir: String = "res://resources/blocks/"
-	var output_path: String = "res://scriptsnscenes/block_ids.gd"
+	var output_path: String = "res://scriptsnscenes/blocks/block_ids.gd"
 	var dir := DirAccess.open(blocks_dir)
 
 	if dir == null:
