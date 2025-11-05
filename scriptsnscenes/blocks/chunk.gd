@@ -152,8 +152,11 @@ func _add_face(surface_tool: SurfaceTool, pos: Vector3i, face: String, block_id:
 	surface_tool.add_index(offset + 2)
 	surface_tool.add_index(offset + 3)
 
-func global_to_chunk_coords(global_vec:Vector3i):
-	return Vector2i(global_vec.x%CHUNK_SIZE, global_vec.z%CHUNK_SIZE)
+## Return the chunk position for a given global position
+static func global_to_chunk_coords(global_vec:Vector3i) -> Vector2i:
+	return Vector2(float(global_vec.x)/float(CHUNK_SIZE), float(global_vec.z)/float(CHUNK_SIZE)).floor()
+static func chunk_to_global_coords(chunk_coords:Vector3i, chunk:Chunk) -> Vector3i:
+	return Vector3i(chunk_coords.x + chunk.chunk_position.x, chunk_coords.y, chunk_coords.z + chunk.chunk_position.y)
 
 func mark_block_dirty(pos: Vector3i):
 	dirty_blocks.append(pos)
@@ -254,6 +257,10 @@ func visualize_chunk_boundary():
 	mesh_instance.transform.origin = Vector3(Chunk.CHUNK_SIZE / 2., Chunk.CHUNK_HEIGHT / 2., Chunk.CHUNK_SIZE / 2.)
 
 	add_child(mesh_instance)
+
+## Turns the global position into local chunk coordinates
+static func to_chunk_space(global_pos:Vector3i) -> Vector3i:
+	return Vector3i(global_pos.x%CHUNK_SIZE, global_pos.y, global_pos.z%CHUNK_SIZE)
 
 func _inside(p: Vector3i) -> bool:
 	return p.x >= 0 and p.x < CHUNK_SIZE \

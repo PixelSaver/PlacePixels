@@ -54,15 +54,13 @@ func _process(_delta: float) -> void:
 		highlight_mesh.visible = false
 		return
 	
-	var chunk : Chunk = Global.world_gen.get_chunk_global(res.pos)
-
-	
+	var chunk : Chunk = Global.world_gen.get_chunk(Chunk.global_to_chunk_coords(res.pos))
 	
 	ray_chunk = chunk
 	ray_hit = res.pos
 	ray_normal = res.normal
 	highlight_mesh.visible = true
-	var target : Vector3 = Vector3i(ray_chunk.chunk_position.x + ray_hit.x, ray_hit.y, ray_chunk.chunk_position.y + ray_hit.z)
+	var target : Vector3 = Vector3i(ray_hit.x, ray_hit.y, ray_hit.z)
 	highlight_mesh.global_position = target + Vector3.ONE * .5
 
 var up_down_deadzone : float = 1e-7
@@ -81,15 +79,18 @@ func _input(event: InputEvent) -> void:
 
 func _break_block():
 	if ray_chunk == null or ray_hit == Vector3i.MIN: return
-	ray_chunk.set_block(ray_hit, BlockIDs.AIR)
-	ray_chunk.mark_block_dirty(ray_hit)
+	var ray_hit_local = Chunk.to_chunk_space(ray_hit)
+	ray_chunk.set_block(ray_hit_local, BlockIDs.AIR)
+	ray_chunk.mark_block_dirty(ray_hit_local)
 
 func _place_block():
 	var target = ray_hit + ray_normal
-	var target_chunk = Global.world_gen.get_chunk(Chunk.global_to_chunk_coords(target))
+	var target_chunk = Global.world_gen.get_chunk_global(target)
+	var target_local = Chunk.to_chunk_space(target)
+	print(str(target_chunk.chunk_position) + ", " + str(ray_hit) + ", " + str(ray_normal))
 	if target_chunk == null or ray_hit == Vector3i.MIN or ray_normal == Vector3i.ZERO: return
-	target_chunk.set_block(target, BlockIDs.DIRT)
-	target_chunk.mark_block_dirty(target)
+	target_chunk.set_block(target_local, BlockIDs.DIRT)
+	target_chunk.mark_block_dirty(target_local)
 
 ## Raycast function using Digital Differential Analyzer
 func raycast_block(origin: Vector3, direction: Vector3, max_distance: float = 100.0):
