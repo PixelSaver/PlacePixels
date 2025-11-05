@@ -54,6 +54,7 @@ func _process(_delta: float) -> void:
 		ray_chunk = null
 		ray_hit = Vector3i.MIN
 		ray_normal = Vector3i.ZERO
+		highlight_mesh.visible = false
 		return
 	
 	ray_chunk = chunk
@@ -75,7 +76,6 @@ func _input(event: InputEvent) -> void:
 		
 		pass
 	elif Input.is_action_just_pressed("right_click"):
-		print("normal is %s" % ray_normal)
 		call_deferred("_place_block")
 
 func _break_block():
