@@ -7,8 +7,8 @@ var loaded_chunks : Dictionary = {}
 func _ready():
 	Global.world_gen = self
 	await BlockRegistry.blocks_loaded
-	for x in range(1):
-		for y in range(2):
+	for x in range(-2,2):
+		for y in range(-2,2):
 			add_chunk(Vector2i(x, y))
 	
 	for chunk in loaded_chunks.values():

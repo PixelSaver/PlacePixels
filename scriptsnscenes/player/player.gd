@@ -87,7 +87,6 @@ func _place_block():
 	var target = ray_hit + ray_normal
 	var target_chunk = Global.world_gen.get_chunk_global(target)
 	var target_local = Chunk.to_chunk_space(target)
-	print(str(target_chunk.chunk_position) + ", " + str(ray_hit) + ", " + str(ray_normal))
 	if target_chunk == null or ray_hit == Vector3i.MIN or ray_normal == Vector3i.ZERO: return
 	target_chunk.set_block(target_local, BlockIDs.DIRT)
 	target_chunk.mark_block_dirty(target_local)
@@ -121,11 +120,7 @@ func raycast_block(origin: Vector3, direction: Vector3, max_distance: float = 10
 		var chunk = Global.world_gen.get_chunk_global(voxel)
 		if chunk:
 			# Convert to chunk-local coordinates
-			var local_voxel = Vector3i(
-				voxel.x % Chunk.CHUNK_SIZE,
-				voxel.y,
-				voxel.z % Chunk.CHUNK_SIZE
-			)
+			var local_voxel = Chunk.to_chunk_space(voxel)
 			var block_id = chunk.get_block_id(local_voxel)
 			if block_id != chunk.default_block_id:
 				return {

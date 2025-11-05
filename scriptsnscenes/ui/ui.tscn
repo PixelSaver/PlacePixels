@@ -38,5 +38,6 @@ texture = ExtResource("3_4tcmo")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Control"]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 181.0
+offset_bottom = 74.0
+fit_content = true

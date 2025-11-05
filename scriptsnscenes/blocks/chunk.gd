@@ -260,7 +260,11 @@ func visualize_chunk_boundary():
 
 ## Turns the global position into local chunk coordinates
 static func to_chunk_space(global_pos:Vector3i) -> Vector3i:
-	return Vector3i(global_pos.x%CHUNK_SIZE, global_pos.y, global_pos.z%CHUNK_SIZE)
+	return Vector3i(
+		((global_pos.x % Chunk.CHUNK_SIZE) + Chunk.CHUNK_SIZE) % Chunk.CHUNK_SIZE,
+		global_pos.y,
+		((global_pos.z % Chunk.CHUNK_SIZE) + Chunk.CHUNK_SIZE) % Chunk.CHUNK_SIZE
+	)
 
 func _inside(p: Vector3i) -> bool:
 	return p.x >= 0 and p.x < CHUNK_SIZE \
