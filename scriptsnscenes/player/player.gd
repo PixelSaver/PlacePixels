@@ -80,13 +80,13 @@ func _input(event: InputEvent) -> void:
 
 func _break_block():
 	if ray_chunk == null or ray_hit == Vector3i.MIN: return
-	ray_chunk.set_block(ray_hit.x, ray_hit.y, ray_hit.z, BlockIDs.AIR)
+	ray_chunk.set_block(ray_hit, BlockIDs.AIR)
 	ray_chunk.mark_block_dirty(ray_hit)
 
 func _place_block():
 	if ray_chunk == null or ray_hit == Vector3i.MIN or ray_normal == Vector3i.ZERO: return
 	var target = ray_hit + ray_normal
-	ray_chunk.set_block(target.x, target.y, target.z, BlockIDs.DIRT)
+	ray_chunk.set_block(target, BlockIDs.DIRT)
 	ray_chunk.mark_block_dirty(target)
 
 ## Raycast function using Digital Differential Analyzer
@@ -115,8 +115,8 @@ func raycast_block(chunk: Chunk, origin: Vector3, direction: Vector3, max_distan
 
 	var traveled = 0.0
 	while traveled < max_distance:
-		var block = chunk.get_block(voxel.x, voxel.y, voxel.z)
-		if block.id != chunk.default_block.id:
+		var block = chunk.get_block_id(voxel)
+		if block != chunk.default_block_id:
 			return {
 				"pos": voxel,
 				"normal": normal

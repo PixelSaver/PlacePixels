@@ -17,6 +17,7 @@ size = Vector3(1.001, 1.001, 1.001)
 
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("highlight_mesh")]
 script = ExtResource("1_3vyb7")
+mouse_sensitivity = null
 highlight_mesh = NodePath("HighlightMesh")
 
 [node name="Head" type="Node3D" parent="."]

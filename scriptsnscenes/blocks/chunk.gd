@@ -48,9 +48,7 @@ const UVS = [
 var vertex_count := 0
 
 func _init(pos: Vector2i = Vector2i.ZERO):
-	default_block = BlockRegistry.get_block("air")
 	chunk_position = pos
-	_initialize_blocks()
 
 ## Set the block at the local coords x, y, z of the chunk, given the ID
 func set_block(pos: Vector3i, block_id: int):
@@ -63,16 +61,6 @@ func set_block(pos: Vector3i, block_id: int):
 ## Get the block id at the local coords x, y, z of the chunk
 func get_block_id(pos: Vector3i) -> int:
 	return blocks.get(pos, default_block_id)
-## Initialize 3D array for block storage
-func _initialize_blocks():
-	blocks = []
-	for x in range(CHUNK_SIZE):
-		blocks.append([])
-		for y in range(CHUNK_HEIGHT):
-			blocks[x].append([])
-			for z in range(CHUNK_SIZE):
-				blocks[x][y].append(default_block)
-				#TODO Figure out if i want .duplicate() for every instance??
 
 #func set_block(x: int, y: int, z: int, block_type: int):
 	#if x >= 0 and x < CHUNK_SIZE and y >= 0 and y < CHUNK_HEIGHT and z >= 0 and z < CHUNK_SIZE:
@@ -147,7 +135,8 @@ func _add_face(surface_tool: SurfaceTool, pos: Vector3i, face: String, block_id:
 	for i in range(4):
 		surface_tool.set_normal(normal)
 		surface_tool.set_uv(UVS[i])
-		surface_tool.set_color(block.get_color(face))
+		#surface_tool.set_color(block.get_color(face))
+		surface_tool.set_color(block.block_colors[0])
 		surface_tool.add_vertex(Vector3(pos.x, pos.y, pos.z) + verts[i])
 
 	vertex_count += 4
