@@ -24,7 +24,6 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += GRAVITY * delta
 	
-	
 	var input_dir := Input.get_vector("left", "right", "up", "down")
 	var forward := head.basis.z
 	forward.y = 0

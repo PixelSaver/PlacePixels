@@ -49,9 +49,12 @@ var vertex_count := 0
 
 func _init(pos: Vector2i = Vector2i.ZERO):
 	chunk_position = pos
+	#if OS.is_debug_build():
+		#visualize_chunk_boundary()
 
 ## Set the block at the local coords x, y, z of the chunk, given the ID
 func set_block(pos: Vector3i, block_id: int):
+	if not _inside(pos): return
 	if block_id == default_block_id:
 		blocks.erase(pos)
 	else:
@@ -223,6 +226,39 @@ func _rebuild_dirty_blocks():
 	## Only create collision if mesh contains geometry
 	#if mesh and mesh.get_surface_count() > 0:
 		#create_trimesh_collision()
+
+func visualize_chunk_boundary():
+	# Remove previous boundary visualizers
+	for child in get_children():
+		if child.name == "ChunkBoundary":
+			remove_child(child)
+			child.queue_free()
+
+	var mesh_instance = MeshInstance3D.new()
+	mesh_instance.name = "ChunkBoundary"
+
+	var cube_mesh = BoxMesh.new()
+	cube_mesh.size = Vector3(Chunk.CHUNK_SIZE, Chunk.CHUNK_HEIGHT, Chunk.CHUNK_SIZE)
+	mesh_instance.mesh = cube_mesh
+
+	# Use wireframe material for visualization
+	var mat = StandardMaterial3D.new()
+	mat.albedo_color = Color(0, 1, 0, 0.2)  # semi-transparent green
+	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	mat.flags_transparent = true
+	mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+	mat.flags_albedo_from_vertex_color = false
+	mesh_instance.material_override = mat
+
+	# Center the cube around the chunk
+	mesh_instance.transform.origin = Vector3(Chunk.CHUNK_SIZE / 2., Chunk.CHUNK_HEIGHT / 2., Chunk.CHUNK_SIZE / 2.)
+
+	add_child(mesh_instance)
+
+func _inside(p: Vector3i) -> bool:
+	return p.x >= 0 and p.x < CHUNK_SIZE \
+		and p.y >= 0 and p.y < CHUNK_HEIGHT \
+		and p.z >= 0 and p.z < CHUNK_SIZE
 
 ## ME WHEN I ACTUALLY TRY TO MAKE THIS GO FARTHER THAN SIEGE
 
