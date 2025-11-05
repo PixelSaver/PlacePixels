@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://bpfttyvlreu3a"]
+[gd_scene load_steps=4 format=3 uid="uid://bpfttyvlreu3a"]
 
 [ext_resource type="Script" uid="uid://mrmx8c7gdlq8" path="res://scriptsnscenes/ui/ui.gd" id="1_nfa55"]
 [ext_resource type="Theme" uid="uid://6wph4wsx27ki" path="res://assets/theme.tres" id="2_qyfhn"]
+[ext_resource type="Texture2D" uid="uid://b42qygbwajarx" path="res://assets/images/homemade_crosshair.png" id="3_4tcmo"]
 
 [node name="UI" type="CanvasLayer" node_paths=PackedStringArray("fps_label")]
 script = ExtResource("1_nfa55")
@@ -25,9 +26,15 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="ColorRect" type="ColorRect" parent="Control/CenterContainer"]
+visible = false
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 color = Color(1, 1, 1, 0.52156866)
+
+[node name="TextureRect" type="TextureRect" parent="Control/CenterContainer"]
+modulate = Color(1, 1, 1, 0.47058824)
+layout_mode = 2
+texture = ExtResource("3_4tcmo")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Control"]
 layout_mode = 0
