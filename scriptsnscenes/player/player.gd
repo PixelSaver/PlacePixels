@@ -10,6 +10,9 @@ const GRAVITY = Vector3.DOWN * 20
 @onready var camera: Camera3D = $Head/Camera3D
 @export var ray : RayCast3D
 #var is_crouched : bool = false
+var ray_hit : Vector3i
+var ray_chunk : Chunk
+var ray_normal : Vector3i
 
 
 func _ready() -> void:
@@ -42,6 +45,19 @@ func _physics_process(delta: float) -> void:
 	
 	move_and_slide()
 
+func _process(_delta: float) -> void:
+	var chunk : Chunk = Global.world_gen.get_chunk(Vector2i.ZERO)
+	var res = raycast_block(chunk, head.global_transform.origin, head.basis.z * -1)
+
+	if res == null:
+		ray_chunk = null
+		ray_hit = Vector3i.MIN
+		ray_normal = Vector3i.ZERO
+		return
+	
+	ray_chunk = chunk
+	ray_hit = res.pos
+	ray_normal = res.normal
 
 var up_down_deadzone : float = 1e-7
 func _input(event: InputEvent) -> void:
@@ -51,16 +67,26 @@ func _input(event: InputEvent) -> void:
 		rot_y = clamp(rot_y, -PI/2.+up_down_deadzone, PI/2.-up_down_deadzone)
 		head.rotation.x = rot_y
 	elif Input.is_action_just_pressed("left_click"):
-		var chunk : Chunk = Global.world_gen.get_chunk(Vector2i.ZERO)
-		var ray_hit_pos := raycast_block(chunk, head.global_transform.origin, head.basis.z*-1)
-		if ray_hit_pos == Vector3i.MIN: return
-		print("ray hit! %s" % ray_hit_pos)
-		chunk.set_block(ray_hit_pos.x, ray_hit_pos.y, ray_hit_pos.z, BlockIDs.AIR)
-		chunk.mark_block_dirty(ray_hit_pos)
+		call_deferred("_break_block")
+		
 		pass
+	elif Input.is_action_just_pressed("right_click"):
+		print("normal is %s" % ray_normal)
+		call_deferred("_place_block")
+
+func _break_block():
+	if ray_chunk == null or ray_hit == Vector3i.MIN: return
+	ray_chunk.set_block(ray_hit.x, ray_hit.y, ray_hit.z, BlockIDs.AIR)
+	ray_chunk.mark_block_dirty(ray_hit)
+
+func _place_block():
+	if ray_chunk == null or ray_hit == Vector3i.MIN or ray_normal == Vector3i.ZERO: return
+	var target = ray_hit + ray_normal
+	ray_chunk.set_block(target.x, target.y, target.z, BlockIDs.DIRT)
+	ray_chunk.mark_block_dirty(target)
 
 ## Raycast function using Digital Differential Analyzer
-func raycast_block(chunk: Chunk, origin: Vector3, direction: Vector3, max_distance: float = 100.0) -> Vector3i:
+func raycast_block(chunk: Chunk, origin: Vector3, direction: Vector3, max_distance: float = 100.0):
 	var pos = origin - chunk.global_transform.origin
 	var step = Vector3i(
 		1 if direction.x > 0 else -1,
@@ -71,14 +97,13 @@ func raycast_block(chunk: Chunk, origin: Vector3, direction: Vector3, max_distan
 	var t_max = Vector3()
 	var t_delta = Vector3()
 
-	# current voxel
 	var voxel = Vector3i(pos)
+	var normal = Vector3.ZERO
 
-	# compute t_max and t_delta for each axis
 	for axis in ["x","y","z"]:
 		if direction[axis] != 0:
-			var voxel_boundary = float(voxel[axis] + (1 if step[axis] > 0 else 0))
-			t_max[axis] = (voxel_boundary - pos[axis]) / direction[axis]
+			var boundary = float(voxel[axis] + (1 if step[axis] > 0 else 0))
+			t_max[axis] = (boundary - pos[axis]) / direction[axis]
 			t_delta[axis] = abs(1 / direction[axis])
 		else:
 			t_max[axis] = INF
@@ -86,23 +111,27 @@ func raycast_block(chunk: Chunk, origin: Vector3, direction: Vector3, max_distan
 
 	var traveled = 0.0
 	while traveled < max_distance:
-		# check if block exists and is solid
 		var block = chunk.get_block(voxel.x, voxel.y, voxel.z)
 		if block.id != chunk.default_block.id:
-			return voxel  # hit a solid block
+			return {
+				"pos": voxel,
+				"normal": normal
+			}
 
-		# step to next voxel
 		if t_max.x < t_max.y and t_max.x < t_max.z:
 			voxel.x += step.x
 			traveled = t_max.x
 			t_max.x += t_delta.x
+			normal = Vector3(-step.x, 0, 0)
 		elif t_max.y < t_max.z:
 			voxel.y += step.y
 			traveled = t_max.y
 			t_max.y += t_delta.y
+			normal = Vector3(0, -step.y, 0)
 		else:
 			voxel.z += step.z
 			traveled = t_max.z
 			t_max.z += t_delta.z
+			normal = Vector3(0, 0, -step.z)
 
-	return Vector3i.MIN
+	return null
