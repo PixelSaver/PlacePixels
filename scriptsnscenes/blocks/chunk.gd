@@ -6,6 +6,8 @@ const CHUNK_HEIGHT = 256
 
 var blocks : Array = []
 var chunk_position : Vector2i = Vector2i.ZERO
+## Array of positions where the blocks have been updated
+var dirty_blocks : Array[Vector3i] = []
 
 var default_block : Block 
 
@@ -142,6 +144,70 @@ func _get_block_color(block_id:int, face:String):
 
 func global_to_chunk_coords(global_vec:Vector3i):
 	return Vector2i(global_vec.x%CHUNK_SIZE, global_vec.z%CHUNK_SIZE)
+
+func mark_block_dirty(pos: Vector3i):
+	dirty_blocks.append(pos)
+
+func _process(_delta):
+	if dirty_blocks.size() > 0:
+		_rebuild_dirty_blocks()
+
+func _rebuild_dirty_blocks():
+	var positions = dirty_blocks.duplicate()
+	dirty_blocks.clear()
+
+	var surface_tool = SurfaceTool.new()
+	#surface_tool.create_from(mesh, 0)
+	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+
+	var mat = StandardMaterial3D.new()
+	mat.vertex_color_use_as_albedo = true
+	surface_tool.set_material(mat)
+
+	vertex_count = 0
+
+	# We will only emit faces around dirty blocks and their neighbors
+	var visited := {}
+
+	for p in positions:
+		for o in [
+			Vector3i(0,0,0),
+			Vector3i(1,0,0), Vector3i(-1,0,0),
+			Vector3i(0,1,0), Vector3i(0,-1,0),
+			Vector3i(0,0,1), Vector3i(0,0,-1)
+		]:
+			var np = p + o
+			if not _inside(np):
+				continue
+			var key = str(np)
+			if visited.has(key):
+				continue
+			visited[key] = true
+
+			var block = blocks[np.x][np.y][np.z]
+			if block.id == default_block.id:
+				continue
+
+			var world_pos = Vector3(np.x, np.y, np.z)
+
+			# same visibility rules as full chunk mesh
+			if is_face_visible(np.x, np.y+1, np.z): _add_face(surface_tool, world_pos, "top", block.id)
+			if is_face_visible(np.x, np.y-1, np.z): _add_face(surface_tool, world_pos, "bottom", block.id)
+			if is_face_visible(np.x-1, np.y, np.z): _add_face(surface_tool, world_pos, "left", block.id)
+			if is_face_visible(np.x+1, np.y, np.z): _add_face(surface_tool, world_pos, "right", block.id)
+			if is_face_visible(np.x, np.y, np.z+1): _add_face(surface_tool, world_pos, "front", block.id)
+			if is_face_visible(np.x, np.y, np.z-1): _add_face(surface_tool, world_pos, "back", block.id)
+
+	mesh = surface_tool.commit()
+
+	# Only create collision if mesh contains geometry
+	if mesh and mesh.get_surface_count() > 0:
+		create_trimesh_collision()
+
+func _inside(p: Vector3i) -> bool:
+	return p.x >= 0 and p.x < CHUNK_SIZE \
+		and p.y >= 0 and p.y < CHUNK_HEIGHT \
+		and p.z >= 0 and p.z < CHUNK_SIZE
 
 ## ME WHEN I ACTUALLY TRY TO MAKE THIS GO FARTHER THAN SIEGE
 

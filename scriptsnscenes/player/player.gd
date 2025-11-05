@@ -56,7 +56,7 @@ func _input(event: InputEvent) -> void:
 		if ray_hit_pos == Vector3i.MIN: return
 		print("ray hit! %s" % ray_hit_pos)
 		chunk.set_block(ray_hit_pos.x, ray_hit_pos.y, ray_hit_pos.z, BlockIDs.AIR)
-		chunk.build_mesh()
+		chunk.mark_block_dirty(ray_hit_pos)
 		pass
 
 ## Raycast function using Digital Differential Analyzer
