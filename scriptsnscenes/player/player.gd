@@ -46,15 +46,17 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func _process(_delta: float) -> void:
-	var chunk : Chunk = Global.world_gen.get_chunk(Vector2i.ZERO)
-	var res = raycast_block(chunk, head.global_transform.origin, head.basis.z * -1)
-
+	var res = raycast_block(camera.global_transform.origin, -camera.global_transform.basis.z)
 	if res == null:
 		ray_chunk = null
 		ray_hit = Vector3i.MIN
 		ray_normal = Vector3i.ZERO
 		highlight_mesh.visible = false
 		return
+	
+	var chunk : Chunk = Global.world_gen.get_chunk_global(res.pos)
+
+	
 	
 	ray_chunk = chunk
 	ray_hit = res.pos
@@ -83,14 +85,15 @@ func _break_block():
 	ray_chunk.mark_block_dirty(ray_hit)
 
 func _place_block():
-	if ray_chunk == null or ray_hit == Vector3i.MIN or ray_normal == Vector3i.ZERO: return
 	var target = ray_hit + ray_normal
-	ray_chunk.set_block(target, BlockIDs.DIRT)
-	ray_chunk.mark_block_dirty(target)
+	var target_chunk = Global.world_gen.get_chunk(Chunk.global_to_chunk_coords(target))
+	if target_chunk == null or ray_hit == Vector3i.MIN or ray_normal == Vector3i.ZERO: return
+	target_chunk.set_block(target, BlockIDs.DIRT)
+	target_chunk.mark_block_dirty(target)
 
 ## Raycast function using Digital Differential Analyzer
-func raycast_block(chunk: Chunk, origin: Vector3, direction: Vector3, max_distance: float = 100.0):
-	var pos = origin - chunk.global_transform.origin
+func raycast_block(origin: Vector3, direction: Vector3, max_distance: float = 100.0):
+	var pos = origin
 	var step = Vector3i(
 		1 if direction.x > 0 else -1,
 		1 if direction.y > 0 else -1,
@@ -114,12 +117,21 @@ func raycast_block(chunk: Chunk, origin: Vector3, direction: Vector3, max_distan
 
 	var traveled = 0.0
 	while traveled < max_distance:
-		var block = chunk.get_block_id(voxel)
-		if block != chunk.default_block_id:
-			return {
-				"pos": voxel,
-				"normal": normal
-			}
+		var chunk = Global.world_gen.get_chunk_global(voxel)
+		if chunk:
+			# Convert to chunk-local coordinates
+			var local_voxel = Vector3i(
+				voxel.x % Chunk.CHUNK_SIZE,
+				voxel.y,
+				voxel.z % Chunk.CHUNK_SIZE
+			)
+			var block_id = chunk.get_block_id(local_voxel)
+			if block_id != chunk.default_block_id:
+				return {
+					"pos": voxel,
+					"normal": normal,
+					"block_id": block_id
+				}
 
 		if t_max.x < t_max.y and t_max.x < t_max.z:
 			voxel.x += step.x
