@@ -9,6 +9,7 @@ const GRAVITY = Vector3.DOWN * 20
 @onready var head: Node3D = $Head
 @onready var camera: Camera3D = $Head/Camera3D
 @export var ray : RayCast3D
+@export var highlight_mesh : MeshInstance3D
 #var is_crouched : bool = false
 var ray_hit : Vector3i
 var ray_chunk : Chunk
@@ -58,6 +59,9 @@ func _process(_delta: float) -> void:
 	ray_chunk = chunk
 	ray_hit = res.pos
 	ray_normal = res.normal
+	highlight_mesh.visible = true
+	var target : Vector3 = Vector3i(ray_chunk.chunk_position.x + ray_hit.x, ray_hit.y, ray_chunk.chunk_position.y + ray_hit.z)
+	highlight_mesh.global_position = target + Vector3.ONE * .5
 
 var up_down_deadzone : float = 1e-7
 func _input(event: InputEvent) -> void:

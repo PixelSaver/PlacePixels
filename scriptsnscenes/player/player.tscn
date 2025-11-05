@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://ctaqaandd8osr"]
+[gd_scene load_steps=6 format=3 uid="uid://ctaqaandd8osr"]
 
 [ext_resource type="Script" uid="uid://414y1t3itqwv" path="res://scriptsnscenes/player/player.gd" id="1_3vyb7"]
 
@@ -7,9 +7,17 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_rd6mq"]
 size = Vector3(0.7, 1.99, 0.7)
 
-[node name="Player" type="CharacterBody3D"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rd6mq"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0.4117647)
+
+[sub_resource type="BoxMesh" id="BoxMesh_c072m"]
+material = SubResource("StandardMaterial3D_rd6mq")
+size = Vector3(1.001, 1.001, 1.001)
+
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("highlight_mesh")]
 script = ExtResource("1_3vyb7")
-mouse_sensitivity = null
+highlight_mesh = NodePath("HighlightMesh")
 
 [node name="Head" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
@@ -23,3 +31,6 @@ mesh = SubResource("CapsuleMesh_g2els")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("BoxShape3D_rd6mq")
+
+[node name="HighlightMesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_c072m")
