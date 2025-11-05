@@ -165,7 +165,7 @@ Need to add to the table of contents if i do this yepype
 - [x] Raycasting
   - [x] Implement voxel raycasting for block selection
   - [ ] Make efficient mesh reloading (so we don't rebuild entire chunk every time)
-  - [ ] Add block outline/highlight shader
+  - [X] Add block outline/highlight shader (did it with a box that's slightly bigger)
   - [ ] Detect which face was hit
 - [ ] Block Modification
   - [ ] Implement block breaking with timing
