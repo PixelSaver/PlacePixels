@@ -163,6 +163,13 @@ func _rebuild_dirty_blocks():
 	if dirty_blocks.size() == 0: return
 	dirty_blocks.clear()
 	build_mesh()
+	# Remove the previous collision shape lol
+	if self.get_children().size() > 0:
+		for child in get_children():
+			if child is StaticBody3D or child is CollisionShape3D:
+				remove_child(child)
+				child.queue_free()
+	create_trimesh_collision()
 	
 	# I GIVE UP EVERYTHING BELOW CAN DIE
 	#return
