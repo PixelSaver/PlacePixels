@@ -139,3 +139,7 @@ func raycast_block(chunk: Chunk, origin: Vector3, direction: Vector3, max_distan
 			normal = Vector3(0, 0, -step.z)
 
 	return null
+
+## get the position of the player (feet) in the local chunk coordinates
+func chunk_pos():
+	return (transform.origin / Chunk.CHUNK_SIZE).floor()
