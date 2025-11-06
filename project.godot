@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 BlockRegistry="*res://scriptsnscenes/blocks/block_registry.gd"
 Global="*res://scriptsnscenes/global.gd"
+Settings="*res://scriptsnscenes/settings.gd"
 
 [display]
 

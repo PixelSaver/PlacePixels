@@ -154,7 +154,10 @@ func _add_face(surface_tool: SurfaceTool, pos: Vector3i, face: String, block_id:
 
 ## Return the chunk position for a given global position
 static func global_to_chunk_coords(global_vec:Vector3i) -> Vector2i:
-	return Vector2(float(global_vec.x)/float(CHUNK_SIZE), float(global_vec.z)/float(CHUNK_SIZE)).floor()
+	return Vector2i(
+		floor(float(global_vec.x) / float(CHUNK_SIZE)),
+		floor(float(global_vec.z) / float(CHUNK_SIZE))
+	)
 static func chunk_to_global_coords(chunk_coords:Vector3i, chunk:Chunk) -> Vector3i:
 	return Vector3i(chunk_coords.x + chunk.chunk_position.x, chunk_coords.y, chunk_coords.z + chunk.chunk_position.y)
 

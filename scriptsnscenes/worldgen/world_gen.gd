@@ -15,6 +15,8 @@ func _ready():
 		_generate_flat_world(chunk)
 	for chunk in loaded_chunks.values():
 		chunk.build_mesh(_get_neighbor_chunks(chunk.chunk_position))
+	
+	Global.player_chunk_update.connect(_on_player_chunk_update)
 
 ## Adds a chunk to the world, and returns the chunk. 
 ## If there is a chunk in that position already, return that chunk
@@ -64,3 +66,37 @@ func _get_neighbor_chunks(center_pos: Vector2i) -> Dictionary:
 			if loaded_chunks.has(pos):
 				neighbors[pos] = loaded_chunks[pos]
 	return neighbors
+
+func _on_player_chunk_update(new_chunk:Chunk):
+	var chunks_in_render: Array[Vector2i] = []
+
+	for dx in range(-Settings.render_distance, Settings.render_distance + 1):
+		for dz in range(-Settings.render_distance, Settings.render_distance + 1):
+			if dx*dx + dz*dz <= Settings.render_distance * Settings.render_distance:
+				chunks_in_render.append(new_chunk.chunk_position + Vector2i(dx, dz))
+	
+	print("All chunks to render: %s" % str(chunks_in_render))
+	
+	var to_unload: Array[Vector2i] = []
+	for pos in loaded_chunks.keys():
+		if pos not in chunks_in_render:
+			to_unload.append(pos)
+
+	for pos in to_unload:
+		_unload_chunk(pos)
+	
+	for chunk_pos in chunks_in_render:
+		_load_chunk(chunk_pos)
+	
+	print("Loaded chunks: %s" % str(loaded_chunks.keys()))
+	
+
+func _load_chunk(chunk_pos:Vector2i):
+	if loaded_chunks.has(chunk_pos): return
+	var added_chunk = add_chunk(chunk_pos)
+	_generate_flat_world(added_chunk)
+	added_chunk.build_mesh()
+func _unload_chunk(chunk_pos:Vector2i):
+	var chunk = loaded_chunks[chunk_pos]
+	loaded_chunks.erase(chunk_pos)
+	chunk.queue_free()

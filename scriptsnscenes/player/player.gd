@@ -44,6 +44,7 @@ func _physics_process(delta: float) -> void:
 		velocity.y = JUMP_VELOCITY
 	
 	move_and_slide()
+	Global.player_chunk = Global.world_gen.get_chunk(Chunk.global_to_chunk_coords(self.global_position))
 
 func _process(_delta: float) -> void:
 	var res = raycast_block(camera.global_transform.origin, -camera.global_transform.basis.z)
