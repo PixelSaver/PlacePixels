@@ -42,7 +42,7 @@ func _run():
 	var output_text: String = "\n".join(output_lines)
 
 	# Undo/Redo setup
-	var undo_redo = get_editor_interface().get_editor_undo_redo()
+	var undo_redo = EditorInterface.get_editor_undo_redo()
 
 	var prev_text := ""
 	if FileAccess.file_exists(output_path):
@@ -63,7 +63,7 @@ func _run():
 		print("✓ Block constants already up to date")
 
 	# Refresh the file system
-	get_editor_interface().get_resource_filesystem().scan()
+	EditorInterface.get_resource_filesystem().scan()
 
 
 func _write_file(path: String, text: String) -> void:
