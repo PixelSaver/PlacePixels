@@ -19,6 +19,7 @@ var last_chunk_pos : Vector2i = Vector2i.MIN
 func _ready() -> void:
 	Global.player = self
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	Global.player_chunk_update.emit(Vector2i.ZERO)
 
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():

@@ -1,3 +1,3 @@
 extends Node
 
-var render_distance : int = 1
+var render_distance : int = 2
