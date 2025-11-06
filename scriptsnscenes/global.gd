@@ -2,10 +2,9 @@ extends Node
 
 var world_gen : WorldGen
 var player : Player
-signal player_chunk_update(new_chunk:Chunk)
-var player_chunk : Chunk :
+signal player_chunk_update(new_chunk:Vector2i)
+var player_chunk : Vector2i :
 	set(val):
 		if val == player_chunk: return
-		player_chunk_update.emit(val)
-		print("Player entered new chunk, %s" % val.chunk_position)
+		print("Player entered new chunk, %s" % val)
 		player_chunk = val

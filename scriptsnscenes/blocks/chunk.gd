@@ -102,7 +102,15 @@ func build_mesh(neighbor_chunks: Dictionary = {}):
 		if is_face_visible_global(pos + Vector3i(0,0,-1), neighbor_chunks): _add_face(surface_tool, pos, "back", block_id)
 
 	mesh = surface_tool.commit()
+	_clear_collision_shapes()
 	create_trimesh_collision()
+
+## Clears trimesh collisions from previous build_meshes
+func _clear_collision_shapes():
+	for child in get_children():
+		if child is StaticBody3D or child is CollisionShape3D:
+			remove_child(child)
+			child.queue_free()
 
 ## Checks if a block face should be visible, including neighbor chunks
 func is_face_visible_global(pos: Vector3i, neighbor_chunks: Dictionary) -> bool:

@@ -14,7 +14,7 @@ const GRAVITY = Vector3.DOWN * 20
 var ray_hit : Vector3i
 var ray_chunk : Chunk
 var ray_normal : Vector3i
-
+var last_chunk_pos : Vector2i = Vector2i.MIN
 
 func _ready() -> void:
 	Global.player = self
@@ -44,7 +44,13 @@ func _physics_process(delta: float) -> void:
 		velocity.y = JUMP_VELOCITY
 	
 	move_and_slide()
-	Global.player_chunk = Global.world_gen.get_chunk(Chunk.global_to_chunk_coords(self.global_position))
+	var current_chunk_pos = Chunk.global_to_chunk_coords(Vector3i(self.global_position))
+	
+	if current_chunk_pos != last_chunk_pos:
+		print("Player entered new chunk: %s" % str(current_chunk_pos))
+		last_chunk_pos = current_chunk_pos
+		Global.player_chunk = current_chunk_pos
+		Global.player_chunk_update.emit(current_chunk_pos)
 
 func _process(_delta: float) -> void:
 	var res = raycast_block(camera.global_transform.origin, -camera.global_transform.basis.z)
