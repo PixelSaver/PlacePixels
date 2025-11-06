@@ -5,6 +5,7 @@ class_name WorldGen
 var loaded_chunks : Dictionary = {}
 var rebuild_queue: Array[Vector2i] = []
 const MAX_REBUILDS_PER_FRAME = 1
+var noise : FastNoiseLite
 
 func _ready():
 	Global.world_gen = self
@@ -14,11 +15,23 @@ func _ready():
 			add_chunk(Vector2i(x, y))
 	
 	for chunk in loaded_chunks.values():
-		_generate_flat_world(chunk)
+		_generate_noise_world(chunk)
 	for chunk in loaded_chunks.values():
 		chunk.build_mesh(_get_neighbor_chunks(chunk.chunk_position))
 	
+	_setup_noise()
+	
 	Global.player_chunk_update.connect(_on_player_chunk_update)
+
+func _setup_noise():
+	noise = FastNoiseLite.new()
+	noise.seed = randi()
+	noise.noise_type = FastNoiseLite.TYPE_SIMPLEX       # or TYPE_PERLIN, etc.
+	noise.frequency = 0.01                              # controls scale of features
+	noise.fractal_type = FastNoiseLite.FRACTAL_FBM # fractal for multi‑octave
+	noise.fractal_octaves = 4
+	noise.fractal_lacunarity = 2.0
+	noise.fractal_gain = 0.5
 
 func _process(_delta: float) -> void:
 	for i in min(MAX_REBUILDS_PER_FRAME, rebuild_queue.size()):
@@ -72,6 +85,17 @@ func _generate_flat_world(chunk: Chunk):
 		var ry = 2 + randi() % 6
 		var rz = randi() % Chunk.CHUNK_SIZE
 		chunk.set_block(Vector3i(rx, ry, rz), 1)
+func _generate_noise_world(chunk: Chunk):
+	if not noise: await get_tree().process_frame
+	for x in range(Chunk.CHUNK_SIZE):
+		for z in range(Chunk.CHUNK_SIZE):
+			if not chunk: continue
+			# Get noise value (-1..1), map to a height
+			var n = noise.get_noise_2d(x+chunk.global_position.x, z+chunk.global_position.z)
+			var height = int((n + 1) * 4)  # scale to 0..8 blocks
+
+			for y in range(height):
+				chunk.set_block(Vector3i(x, y, z), 1)  # stone
 
 ## Helper: gather neighboring chunks for proper face culling
 func _get_neighbor_chunks(center_pos: Vector2i) -> Dictionary:
@@ -126,7 +150,7 @@ func _load_chunk(chunk_pos:Vector2i):
 	if loaded_chunks.has(chunk_pos): 
 		return
 	var added_chunk = add_chunk(chunk_pos)
-	_generate_flat_world(added_chunk)
+	_generate_noise_world(added_chunk)
 func _unload_chunk(chunk_pos:Vector2i):
 	if not loaded_chunks.has(chunk_pos):
 		return
