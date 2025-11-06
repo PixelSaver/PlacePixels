@@ -3,6 +3,8 @@ class_name WorldGen
 
 ## Dictionary<Vector2i, Chunk>
 var loaded_chunks : Dictionary = {}
+var rebuild_queue: Array[Vector2i] = []
+const MAX_REBUILDS_PER_FRAME = 1
 
 func _ready():
 	Global.world_gen = self
@@ -17,6 +19,15 @@ func _ready():
 		chunk.build_mesh(_get_neighbor_chunks(chunk.chunk_position))
 	
 	Global.player_chunk_update.connect(_on_player_chunk_update)
+
+func _process(_delta: float) -> void:
+	for i in min(MAX_REBUILDS_PER_FRAME, rebuild_queue.size()):
+		var chunk_pos = rebuild_queue.pop_front()
+		if loaded_chunks.has(chunk_pos):
+			await get_tree().process_frame
+			if loaded_chunks.has(chunk_pos):
+				loaded_chunks[chunk_pos].build_mesh(_get_neighbor_chunks(chunk_pos))
+
 
 ## Adds a chunk to the world, and returns the chunk. 
 ## If there is a chunk in that position already, return that chunk
@@ -62,7 +73,7 @@ func _generate_flat_world(chunk: Chunk):
 		var rz = randi() % Chunk.CHUNK_SIZE
 		chunk.set_block(Vector3i(rx, ry, rz), 1)
 
-# Helper: gather neighboring chunks for proper face culling
+## Helper: gather neighboring chunks for proper face culling
 func _get_neighbor_chunks(center_pos: Vector2i) -> Dictionary:
 	var neighbors := {}
 	for dx in [-1,0,1]:
@@ -105,8 +116,9 @@ func _on_player_chunk_update(player_chunk_pos:Vector2i):
 				if loaded_chunks.has(neighbor_pos):
 					chunks_to_rebuild[neighbor_pos] = true
 	for chunk_pos in chunks_to_rebuild.keys():
-		if loaded_chunks.has(chunk_pos):
-			loaded_chunks[chunk_pos].build_mesh(_get_neighbor_chunks(chunk_pos))
+		if not loaded_chunks.has(chunk_pos):
+			rebuild_queue.append(chunk_pos)
+			#loaded_chunks[chunk_pos].build_mesh(_get_neighbor_chunks(chunk_pos))
 	
 	
 
