@@ -23,19 +23,13 @@ func _ready():
 ## Done in Chunk space, so its technically Vector2i(floor(global_vec.x/CHUNK_SIZE), floor(global_vec.z/CHUNK_SIZE)
 func add_chunk(pos: Vector2i) -> Chunk:
 	if loaded_chunks.has(pos):
-		print("⚠️⚠️⚠️ add_chunk called for %s but it ALREADY EXISTS in loaded_chunks!" % str(pos))
-		print("   Existing chunk: %s" % str(loaded_chunks[pos]))
-		print("   Stack trace:")
-		print_stack()
 		return loaded_chunks[pos]
 	
-	print("Creating NEW chunk at %s" % str(pos))
 	var new_chunk = Chunk.new(pos)
 	new_chunk.chunk_position = pos
 	new_chunk.position = Vector3i(pos.x * Chunk.CHUNK_SIZE, 0, pos.y * Chunk.CHUNK_SIZE)
 	add_child(new_chunk)
 	loaded_chunks[pos] = new_chunk
-	print("  Chunk added to scene tree, children count: %d" % get_child_count())
 	return new_chunk
 
 ## Return chunk given chunk-space coordinates
@@ -79,8 +73,6 @@ func _get_neighbor_chunks(center_pos: Vector2i) -> Dictionary:
 	return neighbors
 
 func _on_player_chunk_update(player_chunk_pos:Vector2i):
-	print("=== PLAYER MOVED TO CHUNK %s ===" % str(player_chunk_pos))
-	print("Currently loaded before update: %s" % str(loaded_chunks.keys()))
 	var chunks_in_render: Array[Vector2i] = []
 
 	for dx in range(-Settings.render_distance, Settings.render_distance + 1):
@@ -88,7 +80,6 @@ func _on_player_chunk_update(player_chunk_pos:Vector2i):
 			if dx*dx + dz*dz <= Settings.render_distance * Settings.render_distance:
 				chunks_in_render.append(player_chunk_pos + Vector2i(dx, dz))
 	
-	print("All chunks to render: %s" % str(chunks_in_render))
 	
 	var to_unload: Array[Vector2i] = []
 	for pos in loaded_chunks.keys():
@@ -117,21 +108,16 @@ func _on_player_chunk_update(player_chunk_pos:Vector2i):
 		if loaded_chunks.has(chunk_pos):
 			loaded_chunks[chunk_pos].build_mesh(_get_neighbor_chunks(chunk_pos))
 	
-	print("Loaded chunks: %s" % str(loaded_chunks.keys()))
 	
 
 func _load_chunk(chunk_pos:Vector2i):
 	if loaded_chunks.has(chunk_pos): 
-		print("Tried to load chunk %s but it already exists!" % str(chunk_pos))
 		return
-	print("Loading chunk %s" % str(chunk_pos))
 	var added_chunk = add_chunk(chunk_pos)
 	_generate_flat_world(added_chunk)
 func _unload_chunk(chunk_pos:Vector2i):
 	if not loaded_chunks.has(chunk_pos):
 		return
-		print("Tried to unload chunk %s but it doesn't exist!" % str(chunk_pos))
-	print("Unloading chunk %s" % str(chunk_pos))
 	var chunk = loaded_chunks[chunk_pos]
 	loaded_chunks.erase(chunk_pos)
 	remove_child(chunk)
