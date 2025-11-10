@@ -54,7 +54,10 @@ func _physics_process(delta: float) -> void:
 		Global.player_chunk_update.emit(current_chunk_pos)
 
 func _process(_delta: float) -> void:
-	var res = raycast_block(camera.global_transform.origin, -camera.global_transform.basis.z)
+	var res = raycast_block(
+		camera.global_transform.origin ,
+		 -camera.global_transform.basis.z
+	)
 	if res == null:
 		ray_chunk = null
 		ray_hit = Vector3i.MIN

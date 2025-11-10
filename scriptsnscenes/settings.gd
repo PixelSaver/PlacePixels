@@ -1,3 +1,5 @@
 extends Node
 
-var render_distance : int = 2
+var world_name : String = "Test"
+
+var render_distance : int = 1

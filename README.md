@@ -74,10 +74,10 @@ Are minecraft devs lazy /j
 #### Notes
 - Nothing
 
-> [!TIP]  
-> Tip for nothing 
+> [!TIP]
+> Tip for nothing
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p> 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Built With
 
@@ -96,7 +96,7 @@ This section should list any major frameworks/libraries used to bootstrap your p
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-### Play 
+### Play
 
 If you'd like to build it yourself, I used Godot 4.5. I do have a pre-built web version available [here on my itch](https://pixelsaver.itch.io/just-u-and-i), but if you still insist on building this unoptimized mess, go ahead.
 
@@ -139,19 +139,20 @@ Need to add to the table of contents if i do this yepype
 - [ ] Chunk System
   - [X] Design chunk data structure (16x16x16 or 32x32x32 blocks)
   - [X] Implement chunk class with 3D array storage
+  - [X] Saving and loading chunks
   - [ ] Create chunk mesh generation (greedy meshing algorithm)
   - [ ] Add face culling (don't render hidden faces)
   - [ ] Implement chunk serialization/deserialization
-- [ ] World Management
-  - [ ] Create world manager to handle multiple chunks
-  - [ ] Implement chunk loading/unloading based on player position
+- [x] World Management
+  - [x] Create world manager to handle multiple chunks
+  - [x] Implement chunk loading/unloading based on player position
   - [ ] Add chunk pooling for performance
   - [ ] Set up coordinate system (world → chunk → local block)
 
 ### Phase 3: Terrain Generation
 - [ ] Noise-based Generation
-  - [ ] Implement 2D height map using FastNoiseLite
-  - [ ] Add multiple octaves for varied terrain
+  - [x] Implement 2D height map using FastNoiseLite
+  - [X] Add multiple octaves for varied terrain
   - [ ] Create biome system (plains, forest, desert, mountains)
   - [ ] Generate caves using 3D noise
   - [ ] Add ore distribution (coal, iron, gold, diamond)
@@ -262,7 +263,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Pixel Saver - [itch.io](https://pixelsaver.itch.io/) 
+Pixel Saver - [itch.io](https://pixelsaver.itch.io/)
 
 Project Link: [https://github.com/PixelSaver/PlacePixels](https://github.com/PixelSaver/PlacePixels)
 

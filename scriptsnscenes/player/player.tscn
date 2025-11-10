@@ -15,8 +15,9 @@ albedo_color = Color(1, 1, 1, 0.105882354)
 material = SubResource("StandardMaterial3D_rd6mq")
 size = Vector3(1.001, 1.001, 1.001)
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("highlight_mesh")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("ray", "highlight_mesh")]
 script = ExtResource("1_3vyb7")
+ray = NodePath("Head/Camera3D/RayCast3D")
 highlight_mesh = NodePath("HighlightMesh")
 
 [node name="Head" type="Node3D" parent="."]
@@ -25,7 +26,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 [node name="Camera3D" type="Camera3D" parent="Head"]
 
 [node name="RayCast3D" type="RayCast3D" parent="Head/Camera3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.5, 0)
+target_position = Vector3(0, 0, -10)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

@@ -8,19 +8,21 @@ const MAX_REBUILDS_PER_FRAME = 1
 var noise : FastNoiseLite
 
 func _ready():
+	_setup_noise()
 	Global.world_gen = self
 	await BlockRegistry.blocks_loaded
 	for x in range(-2,2):
 		for y in range(-2,2):
 			add_chunk(Vector2i(x, y))
-	
+
 	for chunk in loaded_chunks.values():
 		_generate_noise_world(chunk)
+
+	#await get_tree().process_frame
 	for chunk in loaded_chunks.values():
 		chunk.build_mesh(_get_neighbor_chunks(chunk.chunk_position))
-	
-	_setup_noise()
-	
+
+
 	Global.player_chunk_update.connect(_on_player_chunk_update)
 
 func _setup_noise():
@@ -42,13 +44,13 @@ func _process(_delta: float) -> void:
 				loaded_chunks[chunk_pos].build_mesh(_get_neighbor_chunks(chunk_pos))
 
 
-## Adds a chunk to the world, and returns the chunk. 
+## Adds a chunk to the world, and returns the chunk.
 ## If there is a chunk in that position already, return that chunk
 ## Done in Chunk space, so its technically Vector2i(floor(global_vec.x/CHUNK_SIZE), floor(global_vec.z/CHUNK_SIZE)
 func add_chunk(pos: Vector2i) -> Chunk:
 	if loaded_chunks.has(pos):
 		return loaded_chunks[pos]
-	
+
 	var new_chunk = Chunk.new(pos)
 	new_chunk.chunk_position = pos
 	new_chunk.position = Vector3i(pos.x * Chunk.CHUNK_SIZE, 0, pos.y * Chunk.CHUNK_SIZE)
@@ -114,8 +116,8 @@ func _on_player_chunk_update(player_chunk_pos:Vector2i):
 		for dz in range(-Settings.render_distance, Settings.render_distance + 1):
 			if dx*dx + dz*dz <= Settings.render_distance * Settings.render_distance:
 				chunks_in_render.append(player_chunk_pos + Vector2i(dx, dz))
-	
-	
+
+
 	var to_unload: Array[Vector2i] = []
 	for pos in loaded_chunks.keys():
 		if pos not in chunks_in_render:
@@ -123,13 +125,13 @@ func _on_player_chunk_update(player_chunk_pos:Vector2i):
 
 	for pos in to_unload:
 		_unload_chunk(pos)
-	
+
 	var newly_loaded: Array[Vector2i] = []
 	for chunk_pos in chunks_in_render:
 		if not loaded_chunks.has(chunk_pos):
 			_load_chunk(chunk_pos)
 			newly_loaded.append(chunk_pos)
-	
+
 	var chunks_to_rebuild: Dictionary = {}
 	for chunk_pos in newly_loaded:
 		# Mark this chunk and all its neighbors for rebuild
@@ -143,18 +145,22 @@ func _on_player_chunk_update(player_chunk_pos:Vector2i):
 		if not loaded_chunks.has(chunk_pos):
 			rebuild_queue.append(chunk_pos)
 			#loaded_chunks[chunk_pos].build_mesh(_get_neighbor_chunks(chunk_pos))
-	
-	
+
+
 
 func _load_chunk(chunk_pos:Vector2i):
-	if loaded_chunks.has(chunk_pos): 
+	if loaded_chunks.has(chunk_pos):
 		return
 	var added_chunk = add_chunk(chunk_pos)
-	_generate_noise_world(added_chunk)
+	if added_chunk.load_chunk(Settings.world_name):
+		added_chunk.build_mesh(_get_neighbor_chunks(chunk_pos))
+	else:
+		_generate_noise_world(added_chunk)
 func _unload_chunk(chunk_pos:Vector2i):
 	if not loaded_chunks.has(chunk_pos):
 		return
 	var chunk = loaded_chunks[chunk_pos]
+	chunk.save_chunk(Settings.world_name)
 	loaded_chunks.erase(chunk_pos)
 	remove_child(chunk)
 	chunk.queue_free()

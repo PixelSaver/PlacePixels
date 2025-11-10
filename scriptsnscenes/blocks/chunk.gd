@@ -10,26 +10,26 @@ var chunk_position : Vector2i = Vector2i.ZERO
 ## Array of positions where the blocks have been updated
 var dirty_blocks : Array[Vector3i] = []
 
-var default_block_id := 0 
+var default_block_id := 0
 
 # Face vertices for cube (send help)
 const VERTICES = {
-	"top": [   
+	"top": [
 		Vector3(0, 1, 0), Vector3(1, 1, 0), Vector3(1, 1, 1), Vector3(0, 1, 1)
 	],
 	"bottom": [
 		Vector3(0, 0, 0), Vector3(0, 0, 1), Vector3(1, 0, 1), Vector3(1, 0, 0)
 	],
-	"left": [  
+	"left": [
 		Vector3(0, 0, 0), Vector3(0, 1, 0), Vector3(0, 1, 1), Vector3(0, 0, 1)
 	],
-	"right": [ 
+	"right": [
 		Vector3(1, 0, 1), Vector3(1, 1, 1), Vector3(1, 1, 0), Vector3(1, 0, 0)
 	],
-	"front": [ 
+	"front": [
 		Vector3(0, 0, 1), Vector3(0, 1, 1), Vector3(1, 1, 1), Vector3(1, 0, 1)
 	],
-	"back": [  
+	"back": [
 		Vector3(1, 0, 0), Vector3(1, 1, 0), Vector3(0, 1, 0), Vector3(0, 0, 0)
 	]
 }
@@ -65,19 +65,9 @@ func set_block(pos: Vector3i, block_id: int):
 func get_block_id(pos: Vector3i) -> int:
 	return blocks.get(pos, default_block_id)
 
-#func set_block(x: int, y: int, z: int, block_type: int):
-	#if x >= 0 and x < CHUNK_SIZE and y >= 0 and y < CHUNK_HEIGHT and z >= 0 and z < CHUNK_SIZE:
-		#blocks[x][y][z] = BlockRegistry.get_block_by_id(block_type)
-		#return
-	#assert("One of x y z failed in set_block: (%s, %s, %s)" % [x, y, z])
 
-#func get_block(x: int, y: int, z: int) -> Block:
-	#if x >= 0 and x < CHUNK_SIZE and y >= 0 and y < CHUNK_HEIGHT and z >= 0 and z < CHUNK_SIZE:
-		#return blocks[x][y][z]
-	#assert("One of x y z failed in get_block: (%s, %s, %s)" % [x, y, z])
-	#return default_block
 
-## Check if block is transparent 
+## Check if block is transparent
 func is_block_transparent(block_id: int) -> bool:
 	return BlockRegistry.get_block_by_id(block_id).is_transparent
 
@@ -155,7 +145,7 @@ func _add_face(surface_tool: SurfaceTool, pos: Vector3i, face: String, block_id:
 	surface_tool.add_index(offset + 0)
 	surface_tool.add_index(offset + 1)
 	surface_tool.add_index(offset + 2)
-	
+
 	surface_tool.add_index(offset + 0)
 	surface_tool.add_index(offset + 2)
 	surface_tool.add_index(offset + 3)
@@ -187,59 +177,7 @@ func _rebuild_dirty_blocks():
 				remove_child(child)
 				child.queue_free()
 	create_trimesh_collision()
-	
-	# I GIVE UP EVERYTHING BELOW CAN DIE
-	#return
-	#var positions = dirty_blocks.duplicate()
-	#dirty_blocks.clear()
-#
-	#var surface_tool = SurfaceTool.new()
-	#surface_tool.create_from(mesh, 0)
-	##surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
-#
-	#var mat = StandardMaterial3D.new()
-	#mat.vertex_color_use_as_albedo = true
-	#surface_tool.set_material(mat)
-#
-	#vertex_count = 0
-#
-	## We will only emit faces around dirty blocks and their neighbors
-	#var visited := {}
-#
-	#for p in positions:
-		#for o in [
-			#Vector3i(0,0,0),
-			#Vector3i(1,0,0), Vector3i(-1,0,0),
-			#Vector3i(0,1,0), Vector3i(0,-1,0),
-			#Vector3i(0,0,1), Vector3i(0,0,-1)
-		#]:
-			#var np = p + o
-			#if not _inside(np):
-				#continue
-			#var key = str(np)
-			#if visited.has(key):
-				#continue
-			#visited[key] = true
-#
-			#var block = blocks[np.x][np.y][np.z]
-			#if block.id == default_block.id:
-				#continue
-#
-			#var world_pos = Vector3(np.x, np.y, np.z)
-#
-			## same visibility rules as full chunk mesh
-			#if is_face_visible(np.x, np.y+1, np.z): _add_face(surface_tool, world_pos, "top", block.id)
-			#if is_face_visible(np.x, np.y-1, np.z): _add_face(surface_tool, world_pos, "bottom", block.id)
-			#if is_face_visible(np.x-1, np.y, np.z): _add_face(surface_tool, world_pos, "left", block.id)
-			#if is_face_visible(np.x+1, np.y, np.z): _add_face(surface_tool, world_pos, "right", block.id)
-			#if is_face_visible(np.x, np.y, np.z+1): _add_face(surface_tool, world_pos, "front", block.id)
-			#if is_face_visible(np.x, np.y, np.z-1): _add_face(surface_tool, world_pos, "back", block.id)
-#
-	#mesh = surface_tool.commit()
-#
-	## Only create collision if mesh contains geometry
-	#if mesh and mesh.get_surface_count() > 0:
-		#create_trimesh_collision()
+
 
 func visualize_chunk_boundary():
 	# Remove previous boundary visualizers
@@ -295,3 +233,42 @@ func serialize() -> Dictionary:
 func deserialize(data: Dictionary):
 	chunk_position = data.get("position", Vector3i.ZERO)
 	blocks = data.get("blocks", [])
+
+## Save chunk to binary file, returns true if successful and false otherwise
+func save_chunk(world_name: String) -> bool:
+	var dir = "user://worlds/%s" % world_name
+	if not DirAccess.dir_exists_absolute(dir):
+		DirAccess.make_dir_recursive_absolute(dir)
+
+	var path = "%s/chunk_%s_%s.dat" % [dir, chunk_position.x, chunk_position.y]
+	var file = FileAccess.open(path, FileAccess.WRITE)
+	if not file:
+		print("File not found")
+		return false
+	print("data is being stored at %s" % path)
+	var data = serialize()
+	file.store_var(data)
+	file.close()
+	return true
+
+
+## Load chunk from binary file, returns true if successful and false otherwise
+func load_chunk(world_name: String) -> bool:
+	var path = "user://worlds/%s/chunk_%s_%s.dat" % [world_name, chunk_position.x, chunk_position.y]
+	if not FileAccess.file_exists(path):
+		print("file not found %s" % path)
+		return false
+
+	var file = FileAccess.open(path, FileAccess.READ)
+	if not file:
+		print("file not found %s" % path)
+		return false
+
+	var data = file.get_var()
+	file.close()
+
+	if typeof(data) == TYPE_DICTIONARY:
+		deserialize(data)
+		print("Data found: %s" % data)
+		return true
+	return false
