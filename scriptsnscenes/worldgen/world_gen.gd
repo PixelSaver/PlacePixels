@@ -24,6 +24,8 @@ func _ready():
 
 
 	Global.player_chunk_update.connect(_on_player_chunk_update)
+	
+	delete_folder_recursive("user://worlds/%s" % Settings.world_name)
 
 func _setup_noise():
 	noise = FastNoiseLite.new()
@@ -146,7 +148,32 @@ func _on_player_chunk_update(player_chunk_pos:Vector2i):
 			rebuild_queue.append(chunk_pos)
 			#loaded_chunks[chunk_pos].build_mesh(_get_neighbor_chunks(chunk_pos))
 
-
+func delete_folder_recursive(folder_path: String) -> void:
+	var dir = DirAccess.open(folder_path)
+	if dir == null:
+		print("Folder does not exist: ", folder_path)
+		return
+	
+	dir.list_dir_begin()
+	var file_name = dir.get_next()
+	while file_name != "":
+		if file_name != "." and file_name != "..":
+			var full_path = folder_path + "/" + file_name
+			if dir.current_is_dir():
+				# Recursively delete subfolder
+				delete_folder_recursive(full_path)
+			else:
+				dir.remove(file_name) # removing file inside opened folder
+		file_name = dir.get_next()
+	dir.list_dir_end()
+	
+	# Close current DirAccess and remove the folder itself
+	dir = null
+	var parent_dir = DirAccess.open(folder_path.get_base_dir())
+	if parent_dir:
+		parent_dir.remove(folder_path.get_file())
+		#parent_dir.
+	print("Deleted folder and all contents: ", folder_path)
 
 func _load_chunk(chunk_pos:Vector2i):
 	if loaded_chunks.has(chunk_pos):
