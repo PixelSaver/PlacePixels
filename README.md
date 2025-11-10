@@ -64,10 +64,10 @@ Minecraft devs ARE NOT LAZY!! This stuff is super hard and super slow... How did
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Screenshots
-
+Might be big, so click to reveal!
 <details>
-  <summary><strong>OS Shatter</strong></summary>
-  <img src="Media/glitch_4.png" alt="One frame of the procedural shatter effect done on the OS menu. Eyeball is watching!!! ">
+  <summary><strong>Voxel game!</strong></summary>
+  <img src="media/image1.png" alt="Screenshot of the lush green landscape of a voxel game">
 </details>
 
 #### Notes
