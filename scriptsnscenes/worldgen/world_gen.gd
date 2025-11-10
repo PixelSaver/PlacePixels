@@ -21,9 +21,16 @@ func _ready():
 	#await get_tree().process_frame
 	for chunk in loaded_chunks.values():
 		chunk.build_mesh(_get_neighbor_chunks(chunk.chunk_position))
-
-
+	
 	Global.player_chunk_update.connect(_on_player_chunk_update)
+	
+	# Spawn player above ground
+	var zchunk = get_chunk(Vector2i.ZERO) as Chunk
+	var idx = 0
+	var local_player_pos = Chunk.to_chunk_space(Global.player.global_position)
+	while zchunk.get_block_id(Vector3i(local_player_pos.x, idx, local_player_pos.z)) != 0:
+		idx += 1
+	Global.player.global_position = Vector3i(local_player_pos.x, idx, local_player_pos.z)
 	
 	delete_folder_recursive("user://worlds/%s" % Settings.world_name)
 
