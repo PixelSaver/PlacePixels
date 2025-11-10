@@ -6,14 +6,17 @@
 size = Vector3(0.2, 0.01, 0.01)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c072m"]
+render_priority = 9
 shading_mode = 0
 albedo_color = Color(0.9607843, 0.2, 0.32156864, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mkbce"]
+render_priority = 9
 shading_mode = 0
 albedo_color = Color(0.5294118, 0.8392157, 0.011764706, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fsi80"]
+render_priority = 9
 shading_mode = 0
 albedo_color = Color(0.16078432, 0.54901963, 0.9607843, 1)
 

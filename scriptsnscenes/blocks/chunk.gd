@@ -77,6 +77,7 @@ func build_mesh(neighbor_chunks: Dictionary = {}):
 	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
 	var mat = StandardMaterial3D.new()
 	mat.vertex_color_use_as_albedo = true
+	mat.render_priority = mat.RENDER_PRIORITY_MIN
 	surface_tool.set_material(mat)
 	vertex_count = 0
 

@@ -16,7 +16,7 @@ func _ready() -> void:
 		var child = children[i]
 		if child is HotbarInventorySlot: 
 			hotbar_inv_slots.append(child)
-			child.display_block(i)
+			child.display_block(i+1)
 	hotbar_inv_slots[hover_idx].hover_anim()
 	
 	block_label.text = hotbar_inv_slots[hover_idx].stored_block.block_name
