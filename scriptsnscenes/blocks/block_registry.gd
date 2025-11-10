@@ -6,23 +6,23 @@ var blocks_by_name: Dictionary = {}
 ## Stores blocks by ID: 0 -> Block resource; dynamically loaded
 var blocks_by_id: Dictionary = {}
 
+const BLOCK_FILES = [
+	"air.tres",
+	"dirt.tres",
+	"grass.tres",
+	"stone.tres",
+]
+
 func load_blocks():
-	# Load all .tres files from res://blocks/
-	var dir = DirAccess.open("res://resources/blocks/")
-	if dir:
-		dir.list_dir_begin()
-		var file_name = dir.get_next()
-		
-		while file_name != "":
-			if file_name.ends_with(".tres"):
-				var block: Block = load("res://resources/blocks/" + file_name)
-				register_block(block)
-			file_name = dir.get_next()
-		
-		dir.list_dir_end()
+	for file_name in BLOCK_FILES:
+		var block: Block = load("res://resources/blocks/" + file_name)
+		if block:
+			register_block(block)
+		else:
+			push_error("Failed to load block: %s" % file_name)
 	
 	blocks_loaded.emit()
-	print("Blocks loaded: %s" % blocks_loaded)
+	print("Blocks loaded: %d blocks" % blocks_by_name.size())
 
 func register_block(block: Block):
 	if block.id in blocks_by_id:
