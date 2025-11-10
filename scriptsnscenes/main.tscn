@@ -19,7 +19,6 @@ tonemap_mode = 2
 glow_enabled = true
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_vu4fw"]
-auto_exposure_enabled = true
 dof_blur_far_transition = 20.0
 dof_blur_amount = 0.05
 

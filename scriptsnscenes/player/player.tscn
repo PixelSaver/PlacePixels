@@ -1,6 +1,21 @@
-[gd_scene load_steps=6 format=3 uid="uid://ctaqaandd8osr"]
+[gd_scene load_steps=10 format=3 uid="uid://ctaqaandd8osr"]
 
 [ext_resource type="Script" uid="uid://414y1t3itqwv" path="res://scriptsnscenes/player/player.gd" id="1_3vyb7"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_rd6mq"]
+size = Vector3(0.2, 0.01, 0.01)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c072m"]
+shading_mode = 0
+albedo_color = Color(0.9607843, 0.2, 0.32156864, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mkbce"]
+shading_mode = 0
+albedo_color = Color(0.5294118, 0.8392157, 0.011764706, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fsi80"]
+shading_mode = 0
+albedo_color = Color(0.16078432, 0.54901963, 0.9607843, 1)
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_g2els"]
 
@@ -15,11 +30,11 @@ albedo_color = Color(1, 1, 1, 0.105882354)
 material = SubResource("StandardMaterial3D_rd6mq")
 size = Vector3(1.001, 1.001, 1.001)
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("ray", "highlight_mesh")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("ray", "highlight_mesh", "xyz")]
 script = ExtResource("1_3vyb7")
-mouse_sensitivity = null
 ray = NodePath("Head/Camera3D/RayCast3D")
 highlight_mesh = NodePath("HighlightMesh")
+xyz = NodePath("Head/Camera3D/xyz")
 
 [node name="Head" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
@@ -29,6 +44,30 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 [node name="RayCast3D" type="RayCast3D" parent="Head/Camera3D"]
 visible = false
 target_position = Vector3(0, 0, -10)
+
+[node name="xyz" type="Node3D" parent="Head/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.5)
+
+[node name="x" type="MeshInstance3D" parent="Head/Camera3D/xyz"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, 0, 0)
+cast_shadow = 0
+mesh = SubResource("BoxMesh_rd6mq")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_c072m")
+
+[node name="y" type="MeshInstance3D" parent="Head/Camera3D/xyz"]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0, 0.1, 0)
+cast_shadow = 0
+mesh = SubResource("BoxMesh_rd6mq")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_mkbce")
+
+[node name="z" type="MeshInstance3D" parent="Head/Camera3D/xyz"]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0.1)
+cast_shadow = 0
+mesh = SubResource("BoxMesh_rd6mq")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_fsi80")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

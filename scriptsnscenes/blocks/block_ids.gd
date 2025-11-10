@@ -3,8 +3,9 @@
 # Run tools/generate_block_constants.gd to regenerate
 class_name BlockIDs
 
-const RANGE = 3
+const RANGE = 4
 
 const AIR = 0
 const DIRT = 1
 const STONE = 2
+const GRASS = 3

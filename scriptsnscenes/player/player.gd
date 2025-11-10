@@ -10,6 +10,8 @@ const GRAVITY = Vector3.DOWN * 20
 @onready var camera: Camera3D = $Head/Camera3D
 @export var ray : RayCast3D
 @export var highlight_mesh : MeshInstance3D
+@export var xyz : Node3D
+var is_xyz : bool = true
 #var is_crouched : bool = false
 var ray_hit : Vector3i
 var ray_chunk : Chunk
@@ -52,6 +54,12 @@ func _physics_process(delta: float) -> void:
 		last_chunk_pos = current_chunk_pos
 		Global.player_chunk = current_chunk_pos
 		Global.player_chunk_update.emit(current_chunk_pos)
+		
+	if is_xyz:
+		xyz.show()
+		xyz.global_rotation = Vector3.ZERO
+	else:
+		xyz.hide()
 
 func _process(_delta: float) -> void:
 	var res = raycast_block(

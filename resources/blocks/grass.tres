@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Block" load_steps=2 format=3 uid="uid://dy4m8keoupuj0"]
+
+[ext_resource type="Script" uid="uid://dorvlrl34dn30" path="res://scriptsnscenes/blocks/block.gd" id="1_pxh35"]
+
+[resource]
+script = ExtResource("1_pxh35")
+id = 3
+block_name = "Grass"
+block_colors = Array[Color]([Color(0.29226005, 0.64316386, 0.372101, 1)])
+inventory_texture = Color(0.29411766, 0.6431373, 0.37254903, 1)
+metadata/_custom_type_script = "uid://dorvlrl34dn30"
