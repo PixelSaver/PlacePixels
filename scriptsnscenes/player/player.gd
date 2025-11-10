@@ -47,7 +47,7 @@ func _physics_process(delta: float) -> void:
 		velocity.y = JUMP_VELOCITY
 	
 	move_and_slide()
-	var current_chunk_pos = Chunk.global_to_chunk_coords(Vector3i(self.global_position))
+	var current_chunk_pos = Chunk.global_to_chunk_coords(Vector3i(self.global_position - Vector3(1.0, 0, 1.0)))
 	
 	if current_chunk_pos != last_chunk_pos:
 		print("Player entered new chunk: %s" % str(current_chunk_pos))
