@@ -3,6 +3,7 @@ class_name HotbarInventorySlot
 
 @export var texture_rect : TextureRect
 @export var highlight_mod : Control
+var stored_block : Block
 var duration := 0.5
 var t : Tween
 
@@ -12,7 +13,10 @@ func _ready() -> void:
 
 func display_block(block_id:int):
 	if block_id >= BlockIDs.RANGE: return
-	BlockRegistry.get_block_by_id(block_id) 
+	stored_block = BlockRegistry.get_block_by_id(block_id)
+	#texture_rect.texture = stored_block.get_inv_texture()
+	texture_rect.texture = load("res://assets/images/white_pix.png")
+	texture_rect.modulate = stored_block.inventory_texture
 
 func hover_anim():
 	if t: t.kill()

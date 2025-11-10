@@ -8,3 +8,5 @@ var player_chunk : Vector2i :
 		if val == player_chunk: return
 		print("Player entered new chunk, %s" % val)
 		player_chunk = val
+
+var ui : UI

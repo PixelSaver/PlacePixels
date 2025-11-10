@@ -22,6 +22,7 @@ func load_blocks():
 		dir.list_dir_end()
 	
 	blocks_loaded.emit()
+	print("Blocks loaded: %s" % blocks_loaded)
 
 func register_block(block: Block):
 	if block.id in blocks_by_id:

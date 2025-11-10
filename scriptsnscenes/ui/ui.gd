@@ -1,18 +1,28 @@
 extends CanvasLayer
+class_name UI
 
 @export var fps_label : RichTextLabel
 @export_category("Hotbar")
 @export var hotbar_inv_cont : Container
+@export var block_label : RichTextLabel
 var hotbar_inv_slots : Array[HotbarInventorySlot] = []
 var hover_idx : int = 0
 
 func _ready() -> void:
+	Global.ui = self
+	await BlockRegistry.blocks_loaded
 	for child in hotbar_inv_cont.get_children():
 		if child is HotbarInventorySlot: 
 			hotbar_inv_slots.append(child)
+			child.display_block(randi_range(0,1))
+	hotbar_inv_slots[hover_idx].hover_anim()
+	
+	block_label.text = hotbar_inv_slots[hover_idx].stored_block.block_name
+	block_label.text.capitalize()
+	
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed:
+	if (event.is_action("scroll_down") or event.is_action("scroll_up")) and event.pressed:
 		var prev_slot = hotbar_inv_slots[hover_idx]
 
 		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
@@ -24,6 +34,8 @@ func _input(event: InputEvent) -> void:
 	
 		var slot = hotbar_inv_slots[hover_idx]
 		slot.hover_anim()
+		block_label.text = slot.stored_block.block_name
+		block_label.text.capitalize()
 		prev_slot.unhover_anim()
 
 func _process(_delta: float) -> void:

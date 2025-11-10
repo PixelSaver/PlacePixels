@@ -9,4 +9,5 @@ is_transparent = true
 is_solid = false
 break_time = 0.0
 block_colors = Array[Color]([Color(0, 0, 0, 0)])
+inventory_texture = Color(1, 1, 1, 0)
 metadata/_custom_type_script = "uid://dorvlrl34dn30"

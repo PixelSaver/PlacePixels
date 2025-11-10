@@ -5,10 +5,11 @@
 [ext_resource type="Texture2D" uid="uid://b42qygbwajarx" path="res://assets/images/homemade_crosshair.png" id="3_4tcmo"]
 [ext_resource type="PackedScene" uid="uid://dh1r24enx1ol2" path="res://scriptsnscenes/ui/hotbar/hotbar_inv.tscn" id="4_3p38e"]
 
-[node name="UI" type="CanvasLayer" node_paths=PackedStringArray("fps_label", "hotbar_inv_cont")]
+[node name="UI" type="CanvasLayer" node_paths=PackedStringArray("fps_label", "hotbar_inv_cont", "block_label")]
 script = ExtResource("1_nfa55")
 fps_label = NodePath("Control/RichTextLabel")
-hotbar_inv_cont = NodePath("Control/CenterContainer2/Panel/MarginContainer/HBoxContainer")
+hotbar_inv_cont = NodePath("Control/BottomCont/VBoxContainer/Hotbar/MarginContainer/HBoxContainer")
+block_label = NodePath("Control/BottomCont/VBoxContainer/BlockLabel")
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
@@ -44,53 +45,64 @@ offset_right = 181.0
 offset_bottom = 74.0
 fit_content = true
 
-[node name="CenterContainer2" type="CenterContainer" parent="Control"]
+[node name="BottomCont" type="CenterContainer" parent="Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_top = 0.8
+anchor_top = 0.75
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Panel" type="Panel" parent="Control/CenterContainer2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/BottomCont"]
+layout_mode = 2
+
+[node name="BlockLabel" type="RichTextLabel" parent="Control/BottomCont/VBoxContainer"]
+layout_mode = 2
+bbcode_enabled = true
+text = "Hey did whats up"
+fit_content = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Hotbar" type="Panel" parent="Control/BottomCont/VBoxContainer"]
 custom_minimum_size = Vector2(1170, 130)
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="Control/CenterContainer2/Panel"]
+[node name="MarginContainer" type="MarginContainer" parent="Control/BottomCont/VBoxContainer/Hotbar"]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/CenterContainer2/Panel/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/BottomCont/VBoxContainer/Hotbar/MarginContainer"]
 layout_mode = 2
 
-[node name="Inv1" parent="Control/CenterContainer2/Panel/MarginContainer/HBoxContainer" instance=ExtResource("4_3p38e")]
+[node name="Inv1" parent="Control/BottomCont/VBoxContainer/Hotbar/MarginContainer/HBoxContainer" instance=ExtResource("4_3p38e")]
 layout_mode = 2
 
-[node name="Inv2" parent="Control/CenterContainer2/Panel/MarginContainer/HBoxContainer" instance=ExtResource("4_3p38e")]
+[node name="Inv2" parent="Control/BottomCont/VBoxContainer/Hotbar/MarginContainer/HBoxContainer" instance=ExtResource("4_3p38e")]
 layout_mode = 2
 
-[node name="Inv3" parent="Control/CenterContainer2/Panel/MarginContainer/HBoxContainer" instance=ExtResource("4_3p38e")]
+[node name="Inv3" parent="Control/BottomCont/VBoxContainer/Hotbar/MarginContainer/HBoxContainer" instance=ExtResource("4_3p38e")]
 layout_mode = 2
 
-[node name="Inv4" parent="Control/CenterContainer2/Panel/MarginContainer/HBoxContainer" instance=ExtResource("4_3p38e")]
+[node name="Inv4" parent="Control/BottomCont/VBoxContainer/Hotbar/MarginContainer/HBoxContainer" instance=ExtResource("4_3p38e")]
 layout_mode = 2
 
-[node name="Inv5" parent="Control/CenterContainer2/Panel/MarginContainer/HBoxContainer" instance=ExtResource("4_3p38e")]
+[node name="Inv5" parent="Control/BottomCont/VBoxContainer/Hotbar/MarginContainer/HBoxContainer" instance=ExtResource("4_3p38e")]
 layout_mode = 2
 
-[node name="Inv6" parent="Control/CenterContainer2/Panel/MarginContainer/HBoxContainer" instance=ExtResource("4_3p38e")]
+[node name="Inv6" parent="Control/BottomCont/VBoxContainer/Hotbar/MarginContainer/HBoxContainer" instance=ExtResource("4_3p38e")]
 layout_mode = 2
 
-[node name="Inv7" parent="Control/CenterContainer2/Panel/MarginContainer/HBoxContainer" instance=ExtResource("4_3p38e")]
+[node name="Inv7" parent="Control/BottomCont/VBoxContainer/Hotbar/MarginContainer/HBoxContainer" instance=ExtResource("4_3p38e")]
 layout_mode = 2
 
-[node name="Inv8" parent="Control/CenterContainer2/Panel/MarginContainer/HBoxContainer" instance=ExtResource("4_3p38e")]
+[node name="Inv8" parent="Control/BottomCont/VBoxContainer/Hotbar/MarginContainer/HBoxContainer" instance=ExtResource("4_3p38e")]
 layout_mode = 2
 
-[node name="Inv9" parent="Control/CenterContainer2/Panel/MarginContainer/HBoxContainer" instance=ExtResource("4_3p38e")]
+[node name="Inv9" parent="Control/BottomCont/VBoxContainer/Hotbar/MarginContainer/HBoxContainer" instance=ExtResource("4_3p38e")]
 layout_mode = 2
 
-[node name="Inv10" parent="Control/CenterContainer2/Panel/MarginContainer/HBoxContainer" instance=ExtResource("4_3p38e")]
+[node name="Inv10" parent="Control/BottomCont/VBoxContainer/Hotbar/MarginContainer/HBoxContainer" instance=ExtResource("4_3p38e")]
 layout_mode = 2

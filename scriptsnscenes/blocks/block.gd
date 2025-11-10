@@ -9,6 +9,15 @@ class_name Block
 @export_category("Textures")
 ## Up, Down, Sides
 @export var block_colors : Array[Color]
+#TODO Change this to be texture instead of color
+@export var inventory_texture : Color
 #TODO
 @export_category("Sounds")
 #TODO
+
+func get_inv_texture():
+	#if inventory_texture is Texture:
+		#return inventory_texture
+	#else:
+		var img: Image = load("res://assets/images/white_pix.png")
+		return ImageTexture.create_from_image(img)
