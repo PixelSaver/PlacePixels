@@ -243,9 +243,7 @@ func save_chunk(world_name: String) -> bool:
 	var path = "%s/chunk_%s_%s.dat" % [dir, chunk_position.x, chunk_position.y]
 	var file = FileAccess.open(path, FileAccess.WRITE)
 	if not file:
-		print("File not found")
 		return false
-	print("data is being stored at %s" % path)
 	var data = serialize()
 	file.store_var(data)
 	file.close()
@@ -256,12 +254,10 @@ func save_chunk(world_name: String) -> bool:
 func load_chunk(world_name: String) -> bool:
 	var path = "user://worlds/%s/chunk_%s_%s.dat" % [world_name, chunk_position.x, chunk_position.y]
 	if not FileAccess.file_exists(path):
-		print("file not found %s" % path)
 		return false
 
 	var file = FileAccess.open(path, FileAccess.READ)
 	if not file:
-		print("file not found %s" % path)
 		return false
 
 	var data = file.get_var()
@@ -269,6 +265,5 @@ func load_chunk(world_name: String) -> bool:
 
 	if typeof(data) == TYPE_DICTIONARY:
 		deserialize(data)
-		print("Data found: %s" % data)
 		return true
 	return false
