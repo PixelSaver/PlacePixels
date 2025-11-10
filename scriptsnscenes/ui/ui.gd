@@ -20,6 +20,10 @@ func _ready() -> void:
 	block_label.text = hotbar_inv_slots[hover_idx].stored_block.block_name
 	block_label.text.capitalize()
 	
+## Returns the block hovered in hotbar
+func get_held_block_id():
+	var b_name = hotbar_inv_slots[hover_idx].stored_block.block_name
+	return BlockRegistry.get_id(b_name)
 
 func _input(event: InputEvent) -> void:
 	if (event.is_action("scroll_down") or event.is_action("scroll_up")) and event.pressed:

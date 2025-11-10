@@ -99,7 +99,10 @@ func _place_block():
 	var target_chunk = Global.world_gen.get_chunk_global(target)
 	var target_local = Chunk.to_chunk_space(target)
 	if target_chunk == null or ray_hit == Vector3i.MIN or ray_normal == Vector3i.ZERO: return
-	target_chunk.set_block(target_local, BlockIDs.DIRT)
+	
+	var id = Global.ui.get_held_block_id()
+	if id == -1: id = BlockIDs.AIR
+	target_chunk.set_block(target_local, id)
 	target_chunk.mark_block_dirty(target_local)
 
 ## Raycast function using Digital Differential Analyzer
