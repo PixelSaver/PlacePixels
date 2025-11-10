@@ -12,7 +12,7 @@ func _ready() -> void:
 	unhover_anim()
 
 func display_block(block_id:int):
-	if block_id >= BlockIDs.RANGE: return
+	block_id = clamp(block_id, 0, BlockIDs.RANGE-1)
 	stored_block = BlockRegistry.get_block_by_id(block_id)
 	#texture_rect.texture = stored_block.get_inv_texture()
 	texture_rect.texture = load("res://assets/images/white_pix.png")

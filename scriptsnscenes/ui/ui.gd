@@ -11,10 +11,12 @@ var hover_idx : int = 0
 func _ready() -> void:
 	Global.ui = self
 	await BlockRegistry.blocks_loaded
-	for child in hotbar_inv_cont.get_children():
+	var children = hotbar_inv_cont.get_children()
+	for i in range(children.size()):
+		var child = children[i]
 		if child is HotbarInventorySlot: 
 			hotbar_inv_slots.append(child)
-			child.display_block(randi_range(0,1))
+			child.display_block(i)
 	hotbar_inv_slots[hover_idx].hover_anim()
 	
 	block_label.text = hotbar_inv_slots[hover_idx].stored_block.block_name
@@ -37,6 +39,7 @@ func _input(event: InputEvent) -> void:
 		hover_idx = wrapi(hover_idx, 0, hotbar_inv_slots.size())
 	
 		var slot = hotbar_inv_slots[hover_idx]
+		
 		slot.hover_anim()
 		block_label.text = slot.stored_block.block_name
 		block_label.text.capitalize()

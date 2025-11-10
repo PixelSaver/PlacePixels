@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bkwgaigmq15al"]
+[gd_scene load_steps=11 format=3 uid="uid://bkwgaigmq15al"]
 
 [ext_resource type="PackedScene" uid="uid://ctaqaandd8osr" path="res://scriptsnscenes/player/player.tscn" id="1_o5qli"]
 [ext_resource type="Script" uid="uid://dvp4eva5t5ppq" path="res://scriptsnscenes/main.gd" id="1_p1m74"]
@@ -18,6 +18,11 @@ sky = SubResource("Sky_0wfyh")
 tonemap_mode = 2
 glow_enabled = true
 
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_vu4fw"]
+auto_exposure_enabled = true
+dof_blur_far_transition = 20.0
+dof_blur_amount = 0.05
+
 [sub_resource type="PlaneMesh" id="PlaneMesh_0wfyh"]
 size = Vector2(50, 50)
 
@@ -28,6 +33,7 @@ script = ExtResource("1_p1m74")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_sugp2")
+camera_attributes = SubResource("CameraAttributesPractical_vu4fw")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)

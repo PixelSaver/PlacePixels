@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Block" load_steps=2 format=3 uid="uid://chn5womqlbddv"]
+
+[ext_resource type="Script" uid="uid://dorvlrl34dn30" path="res://scriptsnscenes/blocks/block.gd" id="1_7w64x"]
+
+[resource]
+script = ExtResource("1_7w64x")
+id = 2
+block_name = "Stone"
+block_colors = Array[Color]([Color(0.45490196, 0.45490196, 0.45490196, 1)])
+inventory_texture = Color(0.45490196, 0.45490196, 0.45490196, 1)
+metadata/_custom_type_script = "uid://dorvlrl34dn30"
