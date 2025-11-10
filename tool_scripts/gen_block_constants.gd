@@ -32,8 +32,11 @@ func _run():
 		"# AUTO-GENERATED — DO NOT EDIT MANUALLY",
 		"# Run tools/generate_block_constants.gd to regenerate",
 		"class_name BlockIDs",
+		"",
+		"const RANGE = %d" % blocks.size(),
 		""
 	]
+	
 
 	for block in blocks:
 		var const_name: String = block.block_name.strip_edges().to_upper().replace(" ", "_")
