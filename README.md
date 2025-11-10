@@ -1,8 +1,5 @@
 # Place Pixels
 
-
-
-
 <a id="readme-top"></a>
 <!-- PROJECT LOGO -->
 <!--
@@ -34,11 +31,10 @@
 <details>
   <summary>Table of Contents</summary>
   <ol>
-	<a href="#about-the-project">About The Project</a>
+	<li><a href="#about-the-project">About The Project</a></li>
 	<li><a href="#built-with">Built With</a></li>
-	</ul>
 	<li><a href="#play">How to play?</a></li>
-	<a href="#roadmap">Roadmap</a></li>
+	<li><a href="#roadmap">Roadmap</a></li>
 	<li><a href="#license">License</a></li>
 	<li><a href="#contact">Contact</a></li>
 	<li><a href="#acknowledgments">Acknowledgments</a></li>
@@ -51,16 +47,19 @@
 ## About The Project
 
 ### Overall
-hmm
+I know a lot of people have tried this... Turns out godot themselves have an example!! I didn't get around to checking it out since my systems were built before I realized i could piggyback off of their work (sad) but I'm quite proud of what I got done in 10 hours!
 
 ### What even is this?
-(Hopefully) a voxel-based sandbox game
-add feature list
-* stuff one
-* Stuff 2
+A voxel-based sandbox game where you can place and break blocks... That's about it.
+* Random noise from a seed to generate the world
+* Voxel based blocks
+* Stone, Dirt, and Grass blocks
+* Place and break blocks instantly using raycast
+* First person camera and movement
+* Scrolling hotbar to choose which block
 
 ### What do I take out of this?
-Are minecraft devs lazy /j
+Minecraft devs ARE NOT LAZY!! This stuff is super hard and super slow... How did they optimize it so much? Is Godot slow? Am I bad at optimizing? Did I not do my homework? Yes for the last one...
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -75,13 +74,11 @@ Are minecraft devs lazy /j
 - Nothing
 
 > [!TIP]
-> Tip for nothing
+> Scroll! Look around! Have fun! Not a lot happens sooo...
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Built With
-
-This section should list any major frameworks/libraries used to bootstrap your project.
 
 * [![Godot][Godot 4.4]][Godot-url]
 <!--
@@ -98,7 +95,7 @@ This section should list any major frameworks/libraries used to bootstrap your p
 
 ### Play
 
-If you'd like to build it yourself, I used Godot 4.5. I do have a pre-built web version available [here on my itch](https://pixelsaver.itch.io/just-u-and-i), but if you still insist on building this unoptimized mess, go ahead.
+If you still insist on building this unoptimized mess, go ahead.
 
 1. Install Godot 4.5
 2. Download and unzip the code
@@ -107,7 +104,11 @@ If you'd like to build it yourself, I used Godot 4.5. I do have a pre-built web 
 5. You're good to go!
 
 #### Tutorial
-Need to add to the table of contents if i do this yepype
+WASD to move
+Mouse movements to pan camera
+Left click to break
+Right click to place
+Space to jump
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
