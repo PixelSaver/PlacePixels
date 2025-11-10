@@ -102,11 +102,18 @@ func _generate_noise_world(chunk: Chunk):
 		for z in range(Chunk.CHUNK_SIZE):
 			if not chunk: continue
 			# Get noise value (-1..1), map to a height
-			var n = noise.get_noise_2d(x+chunk.global_position.x, z+chunk.global_position.z)
-			var height = int((n + 1) * 4)  # scale to 0..8 blocks
+			var n = noise.get_noise_2d(x + chunk.global_position.x, z + chunk.global_position.z)
+			var height = int((n + 1) * 10)  # scale to 0-10 blocks
 
 			for y in range(height):
-				chunk.set_block(Vector3i(x, y, z), 1)  # stone
+				var block_id = BlockIDs.STONE  # default
+				
+				if y == height - 1:
+					block_id = BlockIDs.GRASS  # top block
+				elif y >= height - 4:
+					block_id = BlockIDs.DIRT  # dirt layers under grass
+				
+				chunk.set_block(Vector3i(x, y, z), block_id)
 
 ## Helper: gather neighboring chunks for proper face culling
 func _get_neighbor_chunks(center_pos: Vector2i) -> Dictionary:
